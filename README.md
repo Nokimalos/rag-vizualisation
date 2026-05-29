@@ -169,6 +169,11 @@ npm run build                  # type-check + production build
 
 ---
 
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and
+the checks to run before opening a PR. Security issues: see [SECURITY.md](SECURITY.md).
+
 ## License
 
 [MIT](LICENSE) © Kaan Bouldoires
