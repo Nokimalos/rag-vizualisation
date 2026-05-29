@@ -169,6 +169,16 @@ npm run build                  # type-check + production build
 
 ---
 
+## Container images
+
+Tagging a release (`git tag v0.1.0 && git push origin v0.1.0`) builds and
+publishes both images to GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/nokimalos/rag-vizualisation-backend:latest
+docker pull ghcr.io/nokimalos/rag-vizualisation-frontend:latest
+```
+
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and
