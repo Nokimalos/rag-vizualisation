@@ -24,7 +24,7 @@ The pipeline is rendered as an interactive node graph (React Flow) with animated
 - **Multi-provider, swappable at runtime:**
   - **LLM:** OpenAI, Anthropic, Ollama, vLLM (OpenAI-compatible)
   - **Embeddings:** OpenAI, Cohere, Ollama
-  - **Vector DB:** ChromaDB (built-in), with Qdrant / pgvector scaffolding
+  - **Vector DB:** ChromaDB (built-in, default); Qdrant and Postgres/pgvector register automatically when configured
 - **Document ingestion** — PDF (incl. OCR via Tesseract), DOCX, plain text, and codebase import.
 
 ---
@@ -102,8 +102,9 @@ Backend settings are read from `backend/.env` (see [`backend/.env.example`](back
 | `OLLAMA_BASE_URL` | Local Ollama endpoint | `http://localhost:11434` |
 | `VLLM_BASE_URL` / `VLLM_MODEL` | vLLM (OpenAI-compatible) endpoint | — |
 | `CHROMA_PERSIST_DIR` | ChromaDB storage path | `./data/chroma` |
-| `QDRANT_URL` | Qdrant endpoint | `http://localhost:6333` |
-| `PGVECTOR_CONNECTION_STRING` | pgvector connection | — |
+| `QDRANT_URL` | Qdrant endpoint (registers Qdrant when set) | — |
+| `PGVECTOR_CONNECTION_STRING` | Postgres/pgvector connection (registers pgvector when set) | — |
+| `VECTOR_DIM` | Embedding dimension for Qdrant/pgvector collections | `1536` |
 | `UPLOAD_DIR` | Uploaded documents directory | `./uploads` |
 | `DATABASE_URL` | SQLite database path | `./data/rag_viz.db` |
 | `CORS_ORIGINS` | Comma-separated allowed origins | `http://localhost:5173` |

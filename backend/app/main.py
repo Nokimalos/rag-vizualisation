@@ -1,3 +1,4 @@
+import logging
 import os
 from contextlib import asynccontextmanager
 
@@ -18,6 +19,8 @@ from app.providers.llm.ollama_llm import OllamaLLMProvider
 from app.providers.llm.openai_llm import OpenAILLMProvider
 from app.providers.manager import ProviderManager
 from app.providers.vectordb.chroma_db import ChromaDBProvider
+
+logger = logging.getLogger(__name__)
 
 
 def create_provider_manager() -> ProviderManager:
@@ -46,6 +49,31 @@ def create_provider_manager() -> ProviderManager:
     pm.register_embedding("ollama", OllamaEmbeddingProvider(base_url=settings.OLLAMA_BASE_URL))
     # Register vectorDB (ChromaDB always available)
     pm.register_vectordb("chromadb", ChromaDBProvider(path=settings.CHROMA_PERSIST_DIR))
+    # Optional vector DBs — registered only when configured, never the default.
+    # Failures (server down, missing driver) are logged and skipped so the app still boots.
+    if settings.QDRANT_URL:
+        try:
+            from app.providers.vectordb.qdrant_db import QdrantDBProvider
+
+            pm.register_vectordb(
+                "qdrant",
+                QdrantDBProvider(url=settings.QDRANT_URL, vector_size=settings.VECTOR_DIM),
+            )
+        except Exception as exc:
+            logger.warning("Qdrant provider not registered: %s", exc)
+    if settings.PGVECTOR_CONNECTION_STRING:
+        try:
+            from app.providers.vectordb.pgvector_db import PgVectorDBProvider
+
+            pm.register_vectordb(
+                "pgvector",
+                PgVectorDBProvider(
+                    connection_string=settings.PGVECTOR_CONNECTION_STRING,
+                    vector_size=settings.VECTOR_DIM,
+                ),
+            )
+        except Exception as exc:
+            logger.warning("pgvector provider not registered: %s", exc)
     # Set defaults — prefer OpenAI > Anthropic > Ollama for LLM
     if settings.OPENAI_API_KEY:
         default_llm = "openai"

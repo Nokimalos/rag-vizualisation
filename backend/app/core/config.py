@@ -9,8 +9,12 @@ class Settings(BaseSettings):
     VLLM_MODEL: str = ""
     COHERE_API_KEY: str = ""
     CHROMA_PERSIST_DIR: str = "./data/chroma"
-    QDRANT_URL: str = "http://localhost:6333"
+    # Optional vector DBs — left empty by default; set to opt in (see main.py).
+    QDRANT_URL: str = ""
     PGVECTOR_CONNECTION_STRING: str = ""
+    # Embedding dimension used when creating Qdrant / pgvector collections.
+    # Match your embedding model (OpenAI text-embedding-3-small=1536, nomic-embed-text=768).
+    VECTOR_DIM: int = 1536
     UPLOAD_DIR: str = "./uploads"
     DATABASE_URL: str = "./data/rag_viz.db"
     CORS_ORIGINS: str = "http://localhost:5173"

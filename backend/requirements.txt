@@ -29,6 +29,7 @@ cohere==5.*
 # Vector DB
 chromadb==0.6.*
 qdrant-client==1.13.*
+psycopg2-binary==2.9.*  # required only for the optional pgvector backend
 
 # Testing & linting
 pytest==8.*
