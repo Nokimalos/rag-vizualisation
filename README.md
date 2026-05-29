@@ -138,7 +138,8 @@ cd backend
 pytest                         # 20 test modules: unit + integration
 
 cd frontend
-npm run lint                   # oxlint
+npm run lint                   # oxlint (fails on any warning)
+npm test                       # vitest (stores & hooks)
 npm run build                  # type-check + production build
 ```
 
