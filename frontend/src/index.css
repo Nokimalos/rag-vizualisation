@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: dark; }
+  body { background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%); min-height: 100vh; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+}
+
+@layer components {
+  .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+  .glow-blue { box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
+  .glow-purple { box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+  .glow-emerald { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+  .glow-gold { box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+}

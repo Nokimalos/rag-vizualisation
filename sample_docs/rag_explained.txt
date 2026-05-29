@@ -1,0 +1,11 @@
+RAG stands for Retrieval Augmented Generation. It is a technique that enhances Large Language Models by combining them with external knowledge retrieval.
+
+The RAG pipeline works in several steps. First, documents are split into smaller chunks of text. These chunks are then converted into numerical vectors called embeddings using an embedding model. The embeddings are stored in a vector database for efficient similarity search.
+
+When a user asks a question, the question is also converted into an embedding. This query embedding is compared against all stored chunk embeddings using cosine similarity. The most similar chunks are retrieved as relevant context.
+
+The retrieved chunks are then injected into a prompt template along with the user's question. This augmented prompt is sent to a Large Language Model which generates an answer based on the provided context.
+
+The main advantages of RAG are: reduced hallucinations since the model answers based on real documents, up-to-date information without retraining, and traceability since you can see which source documents were used.
+
+Common embedding models include OpenAI's text-embedding-3-small, Cohere's embed-v3, and open-source alternatives like nomic-embed-text. Popular vector databases include ChromaDB, Qdrant, Pinecone, and pgvector.

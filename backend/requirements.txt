@@ -1,0 +1,36 @@
+fastapi==0.115.*
+uvicorn[standard]==0.34.*
+pydantic==2.*
+pydantic-settings==2.*
+aiosqlite==0.20.*
+python-multipart==0.0.*
+websockets==13.*
+
+# Document processing
+PyMuPDF==1.25.*
+python-docx==1.1.*
+tiktoken==0.8.*
+pytesseract==0.3.*
+Pillow==11.*
+
+# ML / Vector
+numpy==2.*
+umap-learn==0.5.*
+scikit-learn==1.6.*
+
+# LLM Providers
+openai==1.*
+anthropic==0.42.*
+ollama==0.4.*
+
+# Embedding Providers
+cohere==5.*
+
+# Vector DB
+chromadb==0.6.*
+qdrant-client==1.13.*
+
+# Testing
+pytest==8.*
+pytest-asyncio==0.24.*
+httpx==0.28.*
