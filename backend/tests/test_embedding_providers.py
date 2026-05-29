@@ -1,15 +1,16 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
 from app.providers.embedding.base import EmbeddingProvider
-from app.providers.embedding.openai_embed import OpenAIEmbeddingProvider
 from app.providers.embedding.cohere_embed import CohereEmbeddingProvider
 from app.providers.embedding.ollama_embed import OllamaEmbeddingProvider
-
+from app.providers.embedding.openai_embed import OpenAIEmbeddingProvider
 
 # ---------------------------------------------------------------------------
 # 1. ABC enforcement
 # ---------------------------------------------------------------------------
+
 
 class TestCannotInstantiateBase:
     def test_cannot_instantiate_base(self):
@@ -20,6 +21,7 @@ class TestCannotInstantiateBase:
 # ---------------------------------------------------------------------------
 # 2. OpenAI Embedding Provider
 # ---------------------------------------------------------------------------
+
 
 class TestOpenAIEmbeddingProvider:
     def test_provider_name(self):
@@ -90,6 +92,7 @@ class TestOpenAIEmbeddingProvider:
 # 3. Cohere Embedding Provider
 # ---------------------------------------------------------------------------
 
+
 class TestCohereEmbeddingProvider:
     def test_provider_name(self):
         provider = CohereEmbeddingProvider(api_key="fake-key")
@@ -158,6 +161,7 @@ class TestCohereEmbeddingProvider:
 # ---------------------------------------------------------------------------
 # 4. Ollama Embedding Provider
 # ---------------------------------------------------------------------------
+
 
 class TestOllamaEmbeddingProvider:
     def test_provider_name(self):

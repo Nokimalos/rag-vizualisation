@@ -1,16 +1,17 @@
 import asyncio
+import json
 import re
 from typing import Any
-import json
 
 try:
     import psycopg2
     import psycopg2.extras
+
     _PSYCOPG2_AVAILABLE = True
 except ImportError:
     _PSYCOPG2_AVAILABLE = False
 
-from app.providers.vectordb.base import VectorDBProvider, SearchResult
+from app.providers.vectordb.base import SearchResult, VectorDBProvider
 
 
 class PgVectorDBProvider(VectorDBProvider):
@@ -32,7 +33,7 @@ class PgVectorDBProvider(VectorDBProvider):
 
     def _table_name(self, collection: str) -> str:
         sanitized = collection.replace("-", "_").replace(" ", "_")
-        if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', sanitized):
+        if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", sanitized):
             raise ValueError(f"Invalid collection name: {collection!r}")
         return sanitized
 

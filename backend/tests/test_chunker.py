@@ -1,7 +1,5 @@
-import pytest
-
-from app.processing.chunker import Chunker, Chunk
 from app.models.schemas import ChunkingStrategy
+from app.processing.chunker import Chunk, Chunker
 
 
 class TestFixedChunking:
@@ -70,11 +68,7 @@ class TestRecursiveChunking:
             assert len(chunk.text) <= 80 or len(chunk.text.strip()) > 0
 
     def test_preserves_all_content(self):
-        text = (
-            "First paragraph content.\n\n"
-            "Second paragraph content.\n\n"
-            "Third paragraph content."
-        )
+        text = "First paragraph content.\n\nSecond paragraph content.\n\nThird paragraph content."
         chunks = Chunker.chunk(text, ChunkingStrategy.RECURSIVE, chunk_size=30, overlap=0)
 
         # Reconstruct and verify key words are present
@@ -117,7 +111,7 @@ class TestChunkMetadata:
         chunks = Chunker.chunk(text, ChunkingStrategy.FIXED, chunk_size=10, overlap=0)
 
         for chunk in chunks:
-            assert text[chunk.start_char:chunk.end_char] == chunk.text
+            assert text[chunk.start_char : chunk.end_char] == chunk.text
 
     def test_chunk_dataclass_fields(self):
         chunk = Chunk(text="hello", index=0, start_char=0, end_char=5)

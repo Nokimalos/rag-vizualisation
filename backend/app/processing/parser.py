@@ -2,7 +2,7 @@ import asyncio
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.providers.llm.base import LLMProvider
@@ -55,6 +55,7 @@ def _upscale_for_vision(image_bytes: bytes, ext: str) -> tuple[bytes, str]:
         upscaled.save(buf, format="PNG", optimize=False)
         return buf.getvalue(), "image/png"
 
+
 VISION_PROMPT = """Décris fidèlement le contenu de cette image en français pour qu'il puisse être indexé et recherché.
 
 D'abord, transcris tout texte visible (titre, légende, axes, labels, annotations).
@@ -87,7 +88,7 @@ class DocumentParser:
         return sorted(["docx", "jpeg", "jpg", "md", "pdf", "png", "txt"])
 
     @staticmethod
-    def parse(file_path: Union[str, Path]) -> ParseResult:
+    def parse(file_path: str | Path) -> ParseResult:
         path = Path(file_path)
 
         if not path.exists():
@@ -164,7 +165,7 @@ class DocumentParser:
 
 
 async def parse_document(
-    file_path: Union[str, Path],
+    file_path: str | Path,
     llm: "LLMProvider | None" = None,
 ) -> ParseResult:
     """Parse a document, using LLM vision for images when available.
@@ -198,6 +199,8 @@ async def parse_document(
                 )
             logger.warning("Vision returned empty text for %s, falling back to OCR", path.name)
         except Exception as exc:
-            logger.warning("Vision describe failed for %s (%s), falling back to OCR", path.name, exc)
+            logger.warning(
+                "Vision describe failed for %s (%s), falling back to OCR", path.name, exc
+            )
 
     return await asyncio.to_thread(DocumentParser.parse, str(path))

@@ -1,15 +1,17 @@
+from collections.abc import AsyncGenerator
+from typing import Any
+
 import pytest
-from typing import Any, AsyncGenerator
 
-from app.providers.llm.base import LLMProvider
 from app.providers.embedding.base import EmbeddingProvider
-from app.providers.vectordb.base import VectorDBProvider, SearchResult
+from app.providers.llm.base import LLMProvider
 from app.providers.manager import ProviderManager
-
+from app.providers.vectordb.base import SearchResult, VectorDBProvider
 
 # ---------------------------------------------------------------------------
 # Minimal mock providers (implement all ABCs)
 # ---------------------------------------------------------------------------
+
 
 class MockLLMProvider(LLMProvider):
     def __init__(self, provider_name: str = "mock_llm"):
@@ -18,12 +20,22 @@ class MockLLMProvider(LLMProvider):
     def name(self) -> str:
         return self._name
 
-    async def generate(self, prompt: str, temperature: float = 0.7,
-                       max_tokens: int = 2048, system_prompt: str | None = None) -> dict[str, Any]:
+    async def generate(
+        self,
+        prompt: str,
+        temperature: float = 0.7,
+        max_tokens: int = 2048,
+        system_prompt: str | None = None,
+    ) -> dict[str, Any]:
         return {"content": "mock", "usage": {}}
 
-    async def generate_stream(self, prompt: str, temperature: float = 0.7,
-                               max_tokens: int = 2048, system_prompt: str | None = None) -> AsyncGenerator[str, None]:
+    async def generate_stream(
+        self,
+        prompt: str,
+        temperature: float = 0.7,
+        max_tokens: int = 2048,
+        system_prompt: str | None = None,
+    ) -> AsyncGenerator[str, None]:
         yield "mock"
 
 
@@ -54,12 +66,19 @@ class MockVectorDBProvider(VectorDBProvider):
     async def create_collection(self, collection: str) -> None:
         pass
 
-    async def add_documents(self, collection: str, ids: list[str], texts: list[str],
-                             embeddings: list[list[float]], metadatas: list[dict[str, Any]] | None = None) -> None:
+    async def add_documents(
+        self,
+        collection: str,
+        ids: list[str],
+        texts: list[str],
+        embeddings: list[list[float]],
+        metadatas: list[dict[str, Any]] | None = None,
+    ) -> None:
         pass
 
-    async def search(self, collection: str, query_embedding: list[float],
-                     top_k: int = 5) -> list[SearchResult]:
+    async def search(
+        self, collection: str, query_embedding: list[float], top_k: int = 5
+    ) -> list[SearchResult]:
         return []
 
     async def delete_collection(self, collection: str) -> None:
@@ -72,6 +91,7 @@ class MockVectorDBProvider(VectorDBProvider):
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestRegisterAndGet:
     def test_register_and_get_llm(self):

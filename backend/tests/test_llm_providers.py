@@ -1,15 +1,16 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.providers.llm.base import LLMProvider
-from app.providers.llm.openai_llm import OpenAILLMProvider
-from app.providers.llm.anthropic_llm import AnthropicLLMProvider
-from app.providers.llm.ollama_llm import OllamaLLMProvider
+import pytest
 
+from app.providers.llm.anthropic_llm import AnthropicLLMProvider
+from app.providers.llm.base import LLMProvider
+from app.providers.llm.ollama_llm import OllamaLLMProvider
+from app.providers.llm.openai_llm import OpenAILLMProvider
 
 # ---------------------------------------------------------------------------
 # Helper: MockStreamManager for Anthropic streaming
 # ---------------------------------------------------------------------------
+
 
 class MockAnthropicStreamManager:
     async def __aenter__(self):
@@ -30,6 +31,7 @@ class MockAnthropicStreamManager:
 # 1. ABC enforcement
 # ---------------------------------------------------------------------------
 
+
 class TestCannotInstantiateBase:
     def test_cannot_instantiate_base(self):
         with pytest.raises(TypeError):
@@ -39,6 +41,7 @@ class TestCannotInstantiateBase:
 # ---------------------------------------------------------------------------
 # 2 & 3. Provider name and default model
 # ---------------------------------------------------------------------------
+
 
 class TestProviderNameAndDefaultModel:
     def test_openai_name(self):
@@ -81,6 +84,7 @@ class TestProviderNameAndDefaultModel:
 # ---------------------------------------------------------------------------
 # 4. generate() — mock API calls, verify output format
 # ---------------------------------------------------------------------------
+
 
 class TestOpenAIGenerate:
     @pytest.mark.asyncio
@@ -133,10 +137,8 @@ class TestOpenAIGenerate:
         with patch.object(provider.client.chat.completions, "create", mock_create):
             result = await provider.generate("Test prompt", system_prompt="You are helpful.")
 
-        # Verify system message was included
-        call_kwargs = mock_create.call_args
-        messages = call_kwargs.kwargs.get("messages") or call_kwargs.args[0] if call_kwargs.args else call_kwargs.kwargs["messages"]
-        # messages is passed as keyword argument
+        # Verify the call was made and the content came back
+        assert mock_create.call_args is not None
         assert result["content"] == "Response text"
 
 
@@ -193,6 +195,7 @@ class TestOllamaGenerate:
 # 5. generate_stream() — mock streaming, verify token yields
 # ---------------------------------------------------------------------------
 
+
 class TestOpenAIGenerateStream:
     @pytest.mark.asyncio
     async def test_generate_stream_yields_tokens(self):
@@ -241,7 +244,9 @@ class TestAnthropicGenerateStream:
     async def test_generate_stream_yields_tokens(self):
         provider = AnthropicLLMProvider(api_key="fake-key")
 
-        with patch.object(provider.client.messages, "stream", return_value=MockAnthropicStreamManager()):
+        with patch.object(
+            provider.client.messages, "stream", return_value=MockAnthropicStreamManager()
+        ):
             collected = []
             async for token in provider.generate_stream("Test prompt"):
                 collected.append(token)
@@ -271,7 +276,9 @@ class TestAnthropicGenerateStream:
                 delta.delta.text = "Token"
                 yield delta
 
-        with patch.object(provider.client.messages, "stream", return_value=MixedEventStreamManager()):
+        with patch.object(
+            provider.client.messages, "stream", return_value=MixedEventStreamManager()
+        ):
             collected = []
             async for token in provider.generate_stream("Test"):
                 collected.append(token)

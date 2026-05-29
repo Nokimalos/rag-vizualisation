@@ -30,14 +30,14 @@ def _is_header_line(line: str) -> bool:
     alpha = [c for c in stripped if c.isalpha()]
     if alpha and sum(1 for c in alpha if c.isupper()) / len(alpha) > 0.7:
         return True
-    if stripped.startswith('#'):
+    if stripped.startswith("#"):
         return True
     return False
 
 
 def _split_into_sentences(text: str) -> list[str]:
     """Split text into sentences, respecting section headers."""
-    lines = text.split('\n')
+    lines = text.split("\n")
     sentences = []
     current = ""
 
@@ -57,7 +57,7 @@ def _split_into_sentences(text: str) -> list[str]:
                 sentences.append(current.strip())
             sentences.append(stripped)
             current = ""
-        elif stripped.startswith(('●', '•', '-', '*', '–')) or re.match(r'^\d+[\.\)]', stripped):
+        elif stripped.startswith(("●", "•", "-", "*", "–")) or re.match(r"^\d+[\.\)]", stripped):
             # Bullet point: flush previous, add as own sentence
             if current.strip():
                 sentences.append(current.strip())
@@ -174,12 +174,14 @@ class Chunker:
             else:
                 end_pos = end_pos + len(last_sentence)
 
-            chunks.append(Chunk(
-                text=chunk_text,
-                index=i,
-                start_char=pos,
-                end_char=end_pos,
-            ))
+            chunks.append(
+                Chunk(
+                    text=chunk_text,
+                    index=i,
+                    start_char=pos,
+                    end_char=end_pos,
+                )
+            )
             search_start = pos + 1
 
         return chunks
@@ -212,10 +214,15 @@ class Chunker:
             if not stripped:
                 return False
             # ALL CAPS lines (at least 3 chars, mostly uppercase)
-            if len(stripped) >= 3 and sum(1 for c in stripped if c.isupper()) / max(1, sum(1 for c in stripped if c.isalpha())) > 0.7:
+            if (
+                len(stripped) >= 3
+                and sum(1 for c in stripped if c.isupper())
+                / max(1, sum(1 for c in stripped if c.isalpha()))
+                > 0.7
+            ):
                 return True
             # Markdown headers
-            if stripped.startswith('#'):
+            if stripped.startswith("#"):
                 return True
             return False
 
@@ -294,12 +301,14 @@ class Chunker:
             else:
                 end_pos = end_pos + len(last_sentence)
 
-            chunks.append(Chunk(
-                text=chunk_text,
-                index=i,
-                start_char=pos,
-                end_char=end_pos,
-            ))
+            chunks.append(
+                Chunk(
+                    text=chunk_text,
+                    index=i,
+                    start_char=pos,
+                    end_char=end_pos,
+                )
+            )
             search_start = pos + 1
 
         return chunks
@@ -313,12 +322,14 @@ class Chunker:
         while start < len(text):
             end = min(start + chunk_size, len(text))
             chunk_text = text[start:end]
-            chunks.append(Chunk(
-                text=chunk_text,
-                index=index,
-                start_char=start,
-                end_char=end,
-            ))
+            chunks.append(
+                Chunk(
+                    text=chunk_text,
+                    index=index,
+                    start_char=start,
+                    end_char=end,
+                )
+            )
             index += 1
 
             if end == len(text):
@@ -347,12 +358,14 @@ class Chunker:
                 pos = search_start
 
             end = pos + len(raw)
-            chunks.append(Chunk(
-                text=raw,
-                index=index,
-                start_char=pos,
-                end_char=end,
-            ))
+            chunks.append(
+                Chunk(
+                    text=raw,
+                    index=index,
+                    start_char=pos,
+                    end_char=end,
+                )
+            )
             index += 1
             search_start = pos + 1
 
@@ -364,7 +377,7 @@ class Chunker:
             return [text]
 
         if not separators:
-            return [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
+            return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
 
         sep = separators[0]
         remaining_seps = separators[1:]

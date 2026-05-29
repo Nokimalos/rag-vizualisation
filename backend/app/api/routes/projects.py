@@ -71,7 +71,12 @@ async def get_project(project_id: str):
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     docs = await db.list_documents(project_id=project_id)
-    return {**project, "documents": docs, "document_count": len(docs), "total_chunks": sum(d["num_chunks"] for d in docs)}
+    return {
+        **project,
+        "documents": docs,
+        "document_count": len(docs),
+        "total_chunks": sum(d["num_chunks"] for d in docs),
+    }
 
 
 @router.delete("/{project_id}")

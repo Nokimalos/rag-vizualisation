@@ -1,6 +1,8 @@
 import pytest
+
 from app.core.events import EventEmitter
 from app.models.schemas import PipelineEvent, PipelineEventType
+
 
 class TestEventEmitter:
     @pytest.fixture
@@ -10,9 +12,14 @@ class TestEventEmitter:
     @pytest.mark.asyncio
     async def test_subscribe_and_emit(self, emitter):
         received = []
-        async def handler(event): received.append(event)
+
+        async def handler(event):
+            received.append(event)
+
         emitter.subscribe(handler)
-        event = PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8, data={"text": "test"})
+        event = PipelineEvent(
+            type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8, data={"text": "test"}
+        )
         await emitter.emit(event)
         assert len(received) == 1
         assert received[0].type == PipelineEventType.QUERY_RECEIVED
@@ -20,8 +27,13 @@ class TestEventEmitter:
     @pytest.mark.asyncio
     async def test_multiple_subscribers(self, emitter):
         received_a, received_b = [], []
-        async def handler_a(event): received_a.append(event)
-        async def handler_b(event): received_b.append(event)
+
+        async def handler_a(event):
+            received_a.append(event)
+
+        async def handler_b(event):
+            received_b.append(event)
+
         emitter.subscribe(handler_a)
         emitter.subscribe(handler_b)
         event = PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8)
@@ -32,15 +44,22 @@ class TestEventEmitter:
     @pytest.mark.asyncio
     async def test_unsubscribe(self, emitter):
         received = []
-        async def handler(event): received.append(event)
+
+        async def handler(event):
+            received.append(event)
+
         emitter.subscribe(handler)
         emitter.unsubscribe(handler)
-        await emitter.emit(PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8))
+        await emitter.emit(
+            PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8)
+        )
         assert len(received) == 0
 
     @pytest.mark.asyncio
     async def test_event_history(self, emitter):
-        await emitter.emit(PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8))
+        await emitter.emit(
+            PipelineEvent(type=PipelineEventType.QUERY_RECEIVED, step=1, total_steps=8)
+        )
         assert len(emitter.history) == 1
 
     def test_clear_history(self, emitter):

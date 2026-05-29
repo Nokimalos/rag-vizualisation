@@ -1,10 +1,10 @@
 import base64
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 import openai
 
 from app.providers.llm.base import LLMProvider
-
 
 _VISION_CAPABLE_MODEL_PREFIXES = ("gpt-4o", "gpt-4.1", "gpt-4-turbo", "gpt-5", "o4")
 

@@ -1,4 +1,5 @@
 import pytest
+
 from app.db.database import Database
 
 
@@ -13,9 +14,7 @@ async def db(tmp_path):
 
 class TestDatabase:
     async def test_initialize_creates_tables(self, db):
-        rows = await db.fetch_all(
-            "SELECT name FROM sqlite_master WHERE type='table'", ()
-        )
+        rows = await db.fetch_all("SELECT name FROM sqlite_master WHERE type='table'", ())
         table_names = {row["name"] for row in rows}
         assert "documents" in table_names
         assert "pipeline_runs" in table_names

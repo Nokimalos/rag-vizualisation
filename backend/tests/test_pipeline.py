@@ -1,16 +1,16 @@
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from typing import Any, AsyncGenerator
-from unittest.mock import MagicMock, AsyncMock
 
 from app.core.events import EventEmitter
 from app.core.pipeline import PipelineEngine
 from app.db.database import Database
 from app.providers.vectordb.base import SearchResult
 
-
 # ---------------------------------------------------------------------------
 # Mock providers
 # ---------------------------------------------------------------------------
+
 
 class MockLLM:
     def name(self):
@@ -81,6 +81,7 @@ class MockVectorDB:
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def mock_provider_manager():
     manager = MagicMock()
@@ -117,6 +118,7 @@ def engine(mock_provider_manager, emitter, mock_db):
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestPipelineEngine:
     async def test_run_query_returns_result(self, engine):

@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Query
-
 import numpy as np
 import umap
+from fastapi import APIRouter, Query
 
 from app.providers.manager import ProviderManager
 
@@ -63,13 +62,14 @@ async def get_embeddings_3d(collection: str = Query(default="default")):
     if n < 15:
         # Too few points for UMAP — use PCA instead
         from sklearn.decomposition import PCA
+
         n_components = min(3, n, embeddings_array.shape[1])
         pca = PCA(n_components=n_components)
         reduced = pca.fit_transform(embeddings_array)
         # Pad to 3 columns if fewer
         if reduced.shape[1] < 3:
             coords_3d = np.zeros((n, 3), dtype=np.float32)
-            coords_3d[:, :reduced.shape[1]] = reduced
+            coords_3d[:, : reduced.shape[1]] = reduced
         else:
             coords_3d = reduced
     else:
@@ -82,13 +82,15 @@ async def get_embeddings_3d(collection: str = Query(default="default")):
         text = documents[i] if i < len(documents) else ""
         metadata = metadatas[i] if i < len(metadatas) else {}
         x, y, z = float(coords_3d[i][0]), float(coords_3d[i][1]), float(coords_3d[i][2])
-        points.append({
-            "id": doc_id,
-            "x": x,
-            "y": y,
-            "z": z,
-            "text": text,
-            "metadata": metadata,
-        })
+        points.append(
+            {
+                "id": doc_id,
+                "x": x,
+                "y": y,
+                "z": z,
+                "text": text,
+                "metadata": metadata,
+            }
+        )
 
     return {"points": points, "total": n}

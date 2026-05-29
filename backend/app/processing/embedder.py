@@ -63,31 +63,39 @@ class Embedder:
 
             # Store this batch
             await self._vectordb.add_documents(
-                collection, batch_ids, batch_texts, embeddings, batch_metas,
+                collection,
+                batch_ids,
+                batch_texts,
+                embeddings,
+                batch_metas,
             )
 
             # Emit progress
-            await self._emitter.emit(PipelineEvent(
-                type=PipelineEventType.CHUNK_EMBEDDED,
-                step=batch_end,
+            await self._emitter.emit(
+                PipelineEvent(
+                    type=PipelineEventType.CHUNK_EMBEDDED,
+                    step=batch_end,
+                    total_steps=len(chunks),
+                    data={
+                        "document_id": document_id,
+                        "batch": f"{batch_start}-{batch_end}",
+                        "progress": f"{batch_end}/{len(chunks)}",
+                    },
+                )
+            )
+
+        await self._emitter.emit(
+            PipelineEvent(
+                type=PipelineEventType.INDEXING_DONE,
+                step=len(chunks),
                 total_steps=len(chunks),
                 data={
                     "document_id": document_id,
-                    "batch": f"{batch_start}-{batch_end}",
-                    "progress": f"{batch_end}/{len(chunks)}",
+                    "collection": collection,
+                    "num_embedded": len(chunks),
                 },
-            ))
-
-        await self._emitter.emit(PipelineEvent(
-            type=PipelineEventType.INDEXING_DONE,
-            step=len(chunks),
-            total_steps=len(chunks),
-            data={
-                "document_id": document_id,
-                "collection": collection,
-                "num_embedded": len(chunks),
-            },
-        ))
+            )
+        )
 
         return {
             "num_embedded": len(chunks),

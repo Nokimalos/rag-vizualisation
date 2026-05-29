@@ -1,7 +1,8 @@
 import io
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
-from httpx import AsyncClient, ASGITransport
+
+import pytest
+from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 
@@ -78,12 +79,12 @@ class TestUploadDocument:
         mock_emitter = MagicMock()
         mock_emitter.emit = AsyncMock()
 
-        with patch("app.api.routes.documents.get_db", return_value=mock_db), \
-             patch("app.api.routes.documents.get_provider_manager", return_value=mock_pm), \
-             patch("app.api.routes.documents.get_emitter", return_value=mock_emitter):
-            response = await client.post(
-                "/api/documents/upload", files=files, data=data
-            )
+        with (
+            patch("app.api.routes.documents.get_db", return_value=mock_db),
+            patch("app.api.routes.documents.get_provider_manager", return_value=mock_pm),
+            patch("app.api.routes.documents.get_emitter", return_value=mock_emitter),
+        ):
+            response = await client.post("/api/documents/upload", files=files, data=data)
 
         assert response.status_code == 200
         body = response.json()

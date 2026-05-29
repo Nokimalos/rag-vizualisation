@@ -1,6 +1,7 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -39,7 +40,7 @@ class PipelineEvent(BaseModel):
     step: int
     total_steps: int
     data: dict[str, Any] = Field(default_factory=dict)
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
 class QueryRequest(BaseModel):
@@ -61,7 +62,7 @@ class DocumentInfo(BaseModel):
     file_type: str
     size_bytes: int
     num_chunks: int = 0
-    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
 class ProviderConfig(BaseModel):
@@ -96,4 +97,4 @@ class PipelineRunSummary(BaseModel):
     answer: str | None = None
     total_latency_ms: float
     steps: list[StepSummary] = Field(default_factory=list)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))

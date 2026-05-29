@@ -1,9 +1,9 @@
 from typing import Any
 
 from qdrant_client import AsyncQdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
+from qdrant_client.models import Distance, PointStruct, VectorParams
 
-from app.providers.vectordb.base import VectorDBProvider, SearchResult
+from app.providers.vectordb.base import SearchResult, VectorDBProvider
 
 
 class QdrantDBProvider(VectorDBProvider):

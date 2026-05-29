@@ -1,10 +1,11 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock
 
-from app.processing.chunker import Chunk
-from app.processing.embedder import Embedder
+import pytest
+
 from app.core.events import EventEmitter
 from app.models.schemas import PipelineEventType
+from app.processing.chunker import Chunk
+from app.processing.embedder import Embedder
 
 
 def make_mock_embedding_provider(embeddings=None, dimensions=3):
@@ -14,10 +15,12 @@ def make_mock_embedding_provider(embeddings=None, dimensions=3):
 
     provider = MagicMock()
     provider.dimensions.return_value = dimensions
-    provider.embed = AsyncMock(return_value={
-        "embeddings": embeddings,
-        "usage": {"total_tokens": 10},
-    })
+    provider.embed = AsyncMock(
+        return_value={
+            "embeddings": embeddings,
+            "usage": {"total_tokens": 10},
+        }
+    )
     return provider
 
 
@@ -36,12 +39,14 @@ def make_chunks(n=2):
     start = 0
     for i in range(n):
         text = texts[i % len(texts)]
-        chunks.append(Chunk(
-            text=text,
-            index=i,
-            start_char=start,
-            end_char=start + len(text),
-        ))
+        chunks.append(
+            Chunk(
+                text=text,
+                index=i,
+                start_char=start,
+                end_char=start + len(text),
+            )
+        )
         start += len(text) + 1
     return chunks
 
@@ -146,8 +151,7 @@ class TestEmbedder:
         await embedder.embed_and_store(chunks, "doc_123", "test_collection")
 
         chunk_embedded_events = [
-            e for e in emitter.history
-            if e.type == PipelineEventType.CHUNK_EMBEDDED
+            e for e in emitter.history if e.type == PipelineEventType.CHUNK_EMBEDDED
         ]
         assert len(chunk_embedded_events) >= 1  # batching may emit 1 event per batch
 
@@ -164,8 +168,7 @@ class TestEmbedder:
         await embedder.embed_and_store(chunks, "doc_123", "test_collection")
 
         indexing_done_events = [
-            e for e in emitter.history
-            if e.type == PipelineEventType.INDEXING_DONE
+            e for e in emitter.history if e.type == PipelineEventType.INDEXING_DONE
         ]
         assert len(indexing_done_events) == 1
 

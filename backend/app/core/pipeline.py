@@ -1,6 +1,7 @@
 import time
 import uuid
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from app.core.events import EventEmitter
 from app.db.database import Database
@@ -82,7 +83,9 @@ class PipelineEngine:
                 filenames[doc_id] = doc["filename"]
         return filenames
 
-    def _build_prompt(self, query: str, chunks: list, filenames: dict[str, str] | None = None) -> str:
+    def _build_prompt(
+        self, query: str, chunks: list, filenames: dict[str, str] | None = None
+    ) -> str:
         filenames = filenames or {}
         context_parts = []
         for i, chunk in enumerate(chunks, 1):
@@ -145,8 +148,7 @@ class PipelineEngine:
                 data={
                     "num_chunks": len(chunks),
                     "chunks": [
-                        {"id": c.chunk_id, "text": c.text, "score": c.score}
-                        for c in chunks
+                        {"id": c.chunk_id, "text": c.text, "score": c.score} for c in chunks
                     ],
                 },
             )
@@ -287,8 +289,7 @@ class PipelineEngine:
                 data={
                     "num_chunks": len(chunks),
                     "chunks": [
-                        {"id": c.chunk_id, "text": c.text, "score": c.score}
-                        for c in chunks
+                        {"id": c.chunk_id, "text": c.text, "score": c.score} for c in chunks
                     ],
                 },
             )

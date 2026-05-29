@@ -1,8 +1,10 @@
 from collections import deque
-from typing import Callable, Awaitable
+from collections.abc import Awaitable, Callable
+
 from app.models.schemas import PipelineEvent
 
 EventHandler = Callable[[PipelineEvent], Awaitable[None]]
+
 
 class EventEmitter:
     def __init__(self, max_history: int = 1000):

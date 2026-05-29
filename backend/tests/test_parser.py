@@ -1,12 +1,12 @@
 import io
-
-import pytest
 from pathlib import Path
 
+import pytest
+
 from app.processing.parser import (
+    VISION_MIN_LONG_EDGE,
     DocumentParser,
     ParseResult,
-    VISION_MIN_LONG_EDGE,
     _upscale_for_vision,
     parse_document,
 )
@@ -26,7 +26,13 @@ def _make_image(path: Path, text: str = "Hello OCR") -> None:
 
 
 class _FakeVisionLLM:
-    def __init__(self, *, supports: bool = True, result: str = "Vision result", raises: Exception | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        supports: bool = True,
+        result: str = "Vision result",
+        raises: Exception | None = None,
+    ) -> None:
         self._supports = supports
         self._result = result
         self._raises = raises
@@ -38,7 +44,9 @@ class _FakeVisionLLM:
     def supports_vision(self) -> bool:
         return self._supports
 
-    async def describe_image(self, image_bytes: bytes, mime_type: str, prompt: str, max_tokens: int = 2048) -> str:
+    async def describe_image(
+        self, image_bytes: bytes, mime_type: str, prompt: str, max_tokens: int = 2048
+    ) -> str:
         self.calls.append({"mime_type": mime_type, "size": len(image_bytes)})
         if self._raises is not None:
             raise self._raises

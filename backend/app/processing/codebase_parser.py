@@ -11,56 +11,139 @@ from pathlib import Path
 
 # Source code we want to index (business logic)
 CODE_EXTENSIONS = {
-    ".py", ".js", ".ts", ".tsx", ".jsx", ".java", ".go", ".rs", ".rb",
-    ".c", ".cpp", ".h", ".hpp", ".cs", ".swift", ".kt", ".scala",
-    ".php", ".dart", ".vue", ".svelte",
+    ".py",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".java",
+    ".go",
+    ".rs",
+    ".rb",
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".cs",
+    ".swift",
+    ".kt",
+    ".scala",
+    ".php",
+    ".dart",
+    ".vue",
+    ".svelte",
 }
 
 # Documentation we always want
 DOC_EXTENSIONS = {
-    ".md", ".txt", ".rst", ".adoc",
+    ".md",
+    ".txt",
+    ".rst",
+    ".adoc",
 }
 
 # Skip these directories
 SKIP_DIRS = {
-    "node_modules", ".git", "__pycache__", ".venv", "venv", "env",
-    ".next", "dist", "build", ".tox", ".mypy_cache", ".pytest_cache",
-    "target", "vendor", ".gradle", ".idea", ".vscode", ".DS_Store",
-    "coverage", ".nyc_output", "eggs",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "env",
+    ".next",
+    "dist",
+    "build",
+    ".tox",
+    ".mypy_cache",
+    ".pytest_cache",
+    "target",
+    "vendor",
+    ".gradle",
+    ".idea",
+    ".vscode",
+    ".DS_Store",
+    "coverage",
+    ".nyc_output",
+    "eggs",
     # Test directories
-    "test", "tests", "__tests__", "spec", "specs",
-    "test-fixtures", "fixtures", "__mocks__",
+    "test",
+    "tests",
+    "__tests__",
+    "spec",
+    "specs",
+    "test-fixtures",
+    "fixtures",
+    "__mocks__",
     # Generated / migration / seed data
-    "migrations", "migration", "db",
-    "generated", "auto-generated",
+    "migrations",
+    "migration",
+    "db",
+    "generated",
+    "auto-generated",
 }
 
 # Skip files matching these patterns
 SKIP_FILE_PATTERNS = {
     # Config / build files (low RAG value)
-    "package.json", "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
-    "tsconfig.json", "tsconfig.app.json", "tsconfig.node.json",
-    "webpack.config.js", "vite.config.ts", "vite.config.js",
-    "babel.config.js", ".babelrc", "jest.config.js", "jest.config.ts",
-    "postcss.config.js", "tailwind.config.js", "tailwind.config.ts",
-    ".eslintrc.js", ".eslintrc.json", ".prettierrc",
-    "pom.xml", "build.gradle", "settings.gradle",
-    "cargo.toml", "cargo.lock", "go.sum",
-    "gemfile.lock", "poetry.lock", "pipfile.lock",
-    "docker-compose.yml", "docker-compose.yaml",
-    ".gitignore", ".dockerignore", ".env.example",
+    "package.json",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "tsconfig.json",
+    "tsconfig.app.json",
+    "tsconfig.node.json",
+    "webpack.config.js",
+    "vite.config.ts",
+    "vite.config.js",
+    "babel.config.js",
+    ".babelrc",
+    "jest.config.js",
+    "jest.config.ts",
+    "postcss.config.js",
+    "tailwind.config.js",
+    "tailwind.config.ts",
+    ".eslintrc.js",
+    ".eslintrc.json",
+    ".prettierrc",
+    "pom.xml",
+    "build.gradle",
+    "settings.gradle",
+    "cargo.toml",
+    "cargo.lock",
+    "go.sum",
+    "gemfile.lock",
+    "poetry.lock",
+    "pipfile.lock",
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    ".gitignore",
+    ".dockerignore",
+    ".env.example",
     # Generated / low-value
-    "changelog.md", "license", "license.md",
+    "changelog.md",
+    "license",
+    "license.md",
 }
 
 # Skip files containing these in their path
 SKIP_PATH_PATTERNS = [
-    "/test/", "/tests/", "/__tests__/", "/spec/",
-    "/fixtures/", "/__mocks__/",
-    "/migration/", "/migrations/",
-    ".test.", ".spec.", "_test.", "_spec.",
-    ".min.js", ".min.css", ".map",
-    "/seed/", "/seeds/",
+    "/test/",
+    "/tests/",
+    "/__tests__/",
+    "/spec/",
+    "/fixtures/",
+    "/__mocks__/",
+    "/migration/",
+    "/migrations/",
+    ".test.",
+    ".spec.",
+    "_test.",
+    "_spec.",
+    ".min.js",
+    ".min.css",
+    ".map",
+    "/seed/",
+    "/seeds/",
 ]
 
 MAX_FILE_SIZE = 200 * 1024  # 200KB
@@ -79,14 +162,31 @@ class CodeChunk:
 
 
 EXT_TO_LANGUAGE = {
-    ".py": "python", ".js": "javascript", ".ts": "typescript",
-    ".tsx": "typescript", ".jsx": "javascript", ".java": "java",
-    ".go": "go", ".rs": "rust", ".rb": "ruby", ".c": "c",
-    ".cpp": "cpp", ".h": "c", ".hpp": "cpp", ".cs": "csharp",
-    ".swift": "swift", ".kt": "kotlin", ".scala": "scala",
-    ".php": "php", ".dart": "dart",
-    ".vue": "vue", ".svelte": "svelte",
-    ".md": "markdown", ".txt": "text", ".rst": "rst", ".adoc": "asciidoc",
+    ".py": "python",
+    ".js": "javascript",
+    ".ts": "typescript",
+    ".tsx": "typescript",
+    ".jsx": "javascript",
+    ".java": "java",
+    ".go": "go",
+    ".rs": "rust",
+    ".rb": "ruby",
+    ".c": "c",
+    ".cpp": "cpp",
+    ".h": "c",
+    ".hpp": "cpp",
+    ".cs": "csharp",
+    ".swift": "swift",
+    ".kt": "kotlin",
+    ".scala": "scala",
+    ".php": "php",
+    ".dart": "dart",
+    ".vue": "vue",
+    ".svelte": "svelte",
+    ".md": "markdown",
+    ".txt": "text",
+    ".rst": "rst",
+    ".adoc": "asciidoc",
 }
 
 
@@ -134,7 +234,9 @@ def _is_indexable(path: Path, rel_path: str) -> bool:
     return True
 
 
-def _make_chunk_header(file_path: str, language: str, start_line: int | None = None, end_line: int | None = None) -> str:
+def _make_chunk_header(
+    file_path: str, language: str, start_line: int | None = None, end_line: int | None = None
+) -> str:
     """Create a natural-language header for each chunk to improve retrieval."""
     header = f"File: {file_path} (language: {language})"
     if start_line and end_line:
@@ -147,14 +249,16 @@ def _split_file_into_chunks(content: str, file_path: str, language: str) -> list
 
     if len(content) <= MAX_CHUNK_CHARS:
         header = _make_chunk_header(file_path, language)
-        return [CodeChunk(
-            text=f"{header}\n\n{content}",
-            file_path=file_path,
-            language=language,
-            start_line=1,
-            end_line=len(lines),
-            chunk_type="file",
-        )]
+        return [
+            CodeChunk(
+                text=f"{header}\n\n{content}",
+                file_path=file_path,
+                language=language,
+                start_line=1,
+                end_line=len(lines),
+                chunk_type="file",
+            )
+        ]
 
     chunks = []
     current_lines: list[str] = []
@@ -165,20 +269,22 @@ def _split_file_into_chunks(content: str, file_path: str, language: str) -> list
         current_lines.append(line)
         current_size += len(line) + 1
 
-        is_boundary = (line.strip() == "" and current_size > MAX_CHUNK_CHARS // 2)
-        is_overflow = (current_size >= MAX_CHUNK_CHARS)
+        is_boundary = line.strip() == "" and current_size > MAX_CHUNK_CHARS // 2
+        is_overflow = current_size >= MAX_CHUNK_CHARS
 
         if is_boundary or is_overflow:
             chunk_text = "\n".join(current_lines)
             header = _make_chunk_header(file_path, language, current_start, i)
-            chunks.append(CodeChunk(
-                text=f"{header}\n\n{chunk_text}",
-                file_path=file_path,
-                language=language,
-                start_line=current_start,
-                end_line=i,
-                chunk_type="section",
-            ))
+            chunks.append(
+                CodeChunk(
+                    text=f"{header}\n\n{chunk_text}",
+                    file_path=file_path,
+                    language=language,
+                    start_line=current_start,
+                    end_line=i,
+                    chunk_type="section",
+                )
+            )
             current_lines = []
             current_start = i + 1
             current_size = 0
@@ -187,14 +293,16 @@ def _split_file_into_chunks(content: str, file_path: str, language: str) -> list
         end = current_start + len(current_lines) - 1
         chunk_text = "\n".join(current_lines)
         header = _make_chunk_header(file_path, language, current_start, end)
-        chunks.append(CodeChunk(
-            text=f"{header}\n\n{chunk_text}",
-            file_path=file_path,
-            language=language,
-            start_line=current_start,
-            end_line=end,
-            chunk_type="section",
-        ))
+        chunks.append(
+            CodeChunk(
+                text=f"{header}\n\n{chunk_text}",
+                file_path=file_path,
+                language=language,
+                start_line=current_start,
+                end_line=end,
+                chunk_type="section",
+            )
+        )
 
     return chunks
 

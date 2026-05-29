@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import aiosqlite
@@ -65,7 +65,7 @@ class Database:
     # --- Projects ---
 
     async def create_project(self, project_id: str, name: str, description: str = "") -> None:
-        now = datetime.now(timezone.utc).isoformat()
+        now = datetime.now(UTC).isoformat()
         collection = f"proj_{project_id[:8]}"
         await self._conn.execute(
             "INSERT INTO projects (id, name, description, collection, created_at) VALUES (?, ?, ?, ?, ?)",
@@ -96,7 +96,7 @@ class Database:
         num_chunks: int,
         project_id: str | None = None,
     ) -> None:
-        uploaded_at = datetime.now(timezone.utc).isoformat()
+        uploaded_at = datetime.now(UTC).isoformat()
         await self._conn.execute(
             "INSERT INTO documents (id, project_id, filename, file_type, size_bytes, num_chunks, uploaded_at) "
             "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -109,22 +109,19 @@ class Database:
         await self._conn.commit()
 
     async def get_document(self, doc_id: str) -> dict | None:
-        rows = await self.fetch_all(
-            "SELECT * FROM documents WHERE id = ?", (doc_id,)
-        )
+        rows = await self.fetch_all("SELECT * FROM documents WHERE id = ?", (doc_id,))
         return rows[0] if rows else None
 
     async def list_documents(self, project_id: str | None = None) -> list[dict]:
         if project_id:
             return await self.fetch_all(
-                "SELECT * FROM documents WHERE project_id = ? ORDER BY uploaded_at DESC", (project_id,)
+                "SELECT * FROM documents WHERE project_id = ? ORDER BY uploaded_at DESC",
+                (project_id,),
             )
-        return await self.fetch_all(
-            "SELECT * FROM documents ORDER BY uploaded_at DESC", ()
-        )
+        return await self.fetch_all("SELECT * FROM documents ORDER BY uploaded_at DESC", ())
 
     async def save_run(self, run_id: str, query: str) -> None:
-        created_at = datetime.now(timezone.utc).isoformat()
+        created_at = datetime.now(UTC).isoformat()
         await self._conn.execute(
             "INSERT INTO pipeline_runs (id, query, status, created_at) VALUES (?, ?, 'running', ?)",
             (run_id, query, created_at),
@@ -138,9 +135,7 @@ class Database:
         )
 
     async def get_run(self, run_id: str) -> dict | None:
-        rows = await self.fetch_all(
-            "SELECT * FROM pipeline_runs WHERE id = ?", (run_id,)
-        )
+        rows = await self.fetch_all("SELECT * FROM pipeline_runs WHERE id = ?", (run_id,))
         return rows[0] if rows else None
 
     async def update_run(
@@ -181,7 +176,7 @@ class Database:
         total_steps: int,
         data: dict | None = None,
     ) -> None:
-        timestamp = datetime.now(timezone.utc).isoformat()
+        timestamp = datetime.now(UTC).isoformat()
         data_str = json.dumps(data if data is not None else {})
         await self._conn.execute(
             "INSERT INTO pipeline_events (run_id, event_type, step, total_steps, data, timestamp) "
@@ -205,9 +200,7 @@ class Database:
             "FROM pipeline_runs WHERE status = 'completed'",
             (),
         )
-        doc_rows = await self.fetch_all(
-            "SELECT COUNT(*) as cnt FROM documents", ()
-        )
+        doc_rows = await self.fetch_all("SELECT COUNT(*) as cnt FROM documents", ())
         total_runs = run_rows[0]["cnt"] if run_rows else 0
         avg_latency = run_rows[0]["avg_lat"] if run_rows else 0.0
         total_documents = doc_rows[0]["cnt"] if doc_rows else 0

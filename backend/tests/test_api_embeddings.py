@@ -1,7 +1,8 @@
-import pytest
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import numpy as np
-from unittest.mock import MagicMock, AsyncMock, patch
-from httpx import AsyncClient, ASGITransport
+import pytest
+from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 
@@ -101,5 +102,7 @@ class TestGetEmbeddings3D:
 
         assert response.status_code == 200
         mock_umap.UMAP.assert_called_once_with(
-            n_components=3, n_neighbors=min(15, n - 1), random_state=42,
+            n_components=3,
+            n_neighbors=min(15, n - 1),
+            random_state=42,
         )

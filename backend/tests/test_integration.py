@@ -2,10 +2,12 @@
 Integration test: Full ingest → query pipeline with a real Database,
 real DocumentParser/Chunker/Embedder, and mock LLM/Embedding/VectorDB providers.
 """
-import pytest
+
 import random
-from typing import Any, AsyncGenerator
-from unittest.mock import MagicMock
+from collections.abc import AsyncGenerator
+from typing import Any
+
+import pytest
 
 from app.core.events import EventEmitter
 from app.core.pipeline import PipelineEngine
@@ -16,7 +18,6 @@ from app.processing.embedder import Embedder
 from app.processing.parser import DocumentParser
 from app.providers.manager import ProviderManager
 from app.providers.vectordb.base import SearchResult
-
 
 # ---------------------------------------------------------------------------
 # Mock providers
@@ -49,9 +50,7 @@ class MockEmbeddingIntegration:
 
     async def embed(self, texts: list[str]) -> dict[str, Any]:
         rng = random.Random(42)
-        embeddings = [
-            [rng.random() for _ in range(EMBEDDING_DIM)] for _ in texts
-        ]
+        embeddings = [[rng.random() for _ in range(EMBEDDING_DIM)] for _ in texts]
         return {
             "embeddings": embeddings,
             "usage": {"total_tokens": len(texts)},
@@ -103,12 +102,14 @@ class MockVectorDBIntegration:
     ) -> list[SearchResult]:
         results = []
         for chunk_id, entry in list(self._store.items())[:top_k]:
-            results.append(SearchResult(
-                chunk_id=chunk_id,
-                text=entry["text"],
-                score=0.9,
-                metadata=entry["metadata"],
-            ))
+            results.append(
+                SearchResult(
+                    chunk_id=chunk_id,
+                    text=entry["text"],
+                    score=0.9,
+                    metadata=entry["metadata"],
+                )
+            )
         return results
 
     async def delete_collection(self, collection: str) -> None:
@@ -121,6 +122,7 @@ class MockVectorDBIntegration:
 # ---------------------------------------------------------------------------
 # Integration tests
 # ---------------------------------------------------------------------------
+
 
 class TestFullPipeline:
     @pytest.mark.asyncio
@@ -250,8 +252,7 @@ class TestFullPipeline:
         # ------------------------------------------------------------------ #
         db_events = await db.get_run_events(run_id)
         assert len(db_events) >= 6, (
-            f"Expected >= 6 DB events, got {len(db_events)}: "
-            f"{[e['event_type'] for e in db_events]}"
+            f"Expected >= 6 DB events, got {len(db_events)}: {[e['event_type'] for e in db_events]}"
         )
 
         # ------------------------------------------------------------------ #

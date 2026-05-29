@@ -39,6 +39,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Lint (ruff)
+        working-directory: backend
+        run: |
+          ruff check app tests
+          ruff format --check app tests
+
       - name: Run tests
         working-directory: backend
         run: pytest -q

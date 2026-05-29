@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from app.core.pipeline import PipelineEngine, DEFAULT_SYSTEM_PROMPT, DEFAULT_PROMPT_TEMPLATE
+from app.core.pipeline import PipelineEngine
 from app.db.database import Database
 from app.models.schemas import QueryRequest
 
@@ -9,6 +9,7 @@ from app.models.schemas import QueryRequest
 class PromptConfig(BaseModel):
     system_prompt: str
     prompt_template: str
+
 
 # ---------------------------------------------------------------------------
 # Module-level dependency singletons

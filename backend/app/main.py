@@ -1,22 +1,23 @@
 import os
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import websocket
+from app.api.routes import documents, embeddings, projects, providers, query, stats
 from app.core.config import settings
 from app.core.events import EventEmitter
 from app.core.pipeline import PipelineEngine
 from app.db.database import Database
-from app.providers.manager import ProviderManager
-from app.providers.llm.openai_llm import OpenAILLMProvider
-from app.providers.llm.anthropic_llm import AnthropicLLMProvider
-from app.providers.llm.ollama_llm import OllamaLLMProvider
-from app.providers.embedding.openai_embed import OpenAIEmbeddingProvider
 from app.providers.embedding.cohere_embed import CohereEmbeddingProvider
 from app.providers.embedding.ollama_embed import OllamaEmbeddingProvider
+from app.providers.embedding.openai_embed import OpenAIEmbeddingProvider
+from app.providers.llm.anthropic_llm import AnthropicLLMProvider
+from app.providers.llm.ollama_llm import OllamaLLMProvider
+from app.providers.llm.openai_llm import OpenAILLMProvider
+from app.providers.manager import ProviderManager
 from app.providers.vectordb.chroma_db import ChromaDBProvider
-from app.api.routes import documents, query, providers, stats, embeddings, projects
-from app.api import websocket
 
 
 def create_provider_manager() -> ProviderManager:
@@ -29,10 +30,14 @@ def create_provider_manager() -> ProviderManager:
     pm.register_llm("ollama", OllamaLLMProvider(base_url=settings.OLLAMA_BASE_URL))
     # vLLM support via OpenAI-compatible API
     if settings.VLLM_BASE_URL:
-        pm.register_llm("vllm", OpenAILLMProvider(
-            api_key="not-needed", model=settings.VLLM_MODEL or "default",
-            base_url=settings.VLLM_BASE_URL,
-        ))
+        pm.register_llm(
+            "vllm",
+            OpenAILLMProvider(
+                api_key="not-needed",
+                model=settings.VLLM_MODEL or "default",
+                base_url=settings.VLLM_BASE_URL,
+            ),
+        )
     # Register embeddings
     if settings.OPENAI_API_KEY:
         pm.register_embedding("openai", OpenAIEmbeddingProvider(api_key=settings.OPENAI_API_KEY))

@@ -36,6 +36,7 @@ def get_pipeline() -> PipelineEngine:
 # Connection Manager
 # ---------------------------------------------------------------------------
 
+
 class ConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
@@ -50,14 +51,16 @@ class ConnectionManager:
 
     async def send_event(self, websocket: WebSocket, event: PipelineEvent) -> None:
         """Send event in the format the frontend expects."""
-        await websocket.send_json({
-            "type": "pipeline_event",
-            "event": event.type.value,
-            "step": event.step,
-            "total_steps": event.total_steps,
-            "data": event.data,
-            "timestamp": event.timestamp.isoformat(),
-        })
+        await websocket.send_json(
+            {
+                "type": "pipeline_event",
+                "event": event.type.value,
+                "step": event.step,
+                "total_steps": event.total_steps,
+                "data": event.data,
+                "timestamp": event.timestamp.isoformat(),
+            }
+        )
 
 
 manager = ConnectionManager()
@@ -83,10 +86,12 @@ async def _run_pipeline_query(
             full_answer += token
 
         # Send final result with full answer
-        await websocket.send_json({
-            "type": "query_complete",
-            "data": {"answer": full_answer},
-        })
+        await websocket.send_json(
+            {
+                "type": "query_complete",
+                "data": {"answer": full_answer},
+            }
+        )
     except Exception as exc:
         await websocket.send_json({"type": "error", "message": str(exc)})
 
@@ -116,9 +121,7 @@ async def pipeline_websocket(websocket: WebSocket) -> None:
                 payload = data.get("payload", {})
                 query = payload.get("text", "")
                 collection = payload.get("collection", "default")
-                asyncio.create_task(
-                    _run_pipeline_query(websocket, query, collection)
-                )
+                asyncio.create_task(_run_pipeline_query(websocket, query, collection))
 
     except WebSocketDisconnect:
         pass

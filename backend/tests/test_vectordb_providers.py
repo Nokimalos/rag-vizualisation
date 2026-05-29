@@ -1,12 +1,13 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.providers.vectordb.base import VectorDBProvider, SearchResult
-
+from app.providers.vectordb.base import SearchResult, VectorDBProvider
 
 # ---------------------------------------------------------------------------
 # 1. ABC enforcement
 # ---------------------------------------------------------------------------
+
 
 class TestCannotInstantiateBase:
     def test_cannot_instantiate_base(self):
@@ -17,6 +18,7 @@ class TestCannotInstantiateBase:
 # ---------------------------------------------------------------------------
 # 2. SearchResult model
 # ---------------------------------------------------------------------------
+
 
 class TestSearchResult:
     def test_search_result_creation(self):
@@ -40,18 +42,21 @@ class TestSearchResult:
 # 3. ChromaDB Provider
 # ---------------------------------------------------------------------------
 
+
 class TestChromaDBProvider:
     def _make_provider(self):
         with patch("app.providers.vectordb.chroma_db.chromadb") as mock_chroma:
             mock_client = MagicMock()
             mock_chroma.PersistentClient.return_value = mock_client
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
         return provider, mock_client
 
     def test_name(self):
         with patch("app.providers.vectordb.chroma_db.chromadb"):
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             assert provider.name() == "chromadb"
 
@@ -64,6 +69,7 @@ class TestChromaDBProvider:
             mock_client.get_or_create_collection.return_value = mock_col
 
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             await provider.create_collection("test_col")
 
@@ -81,6 +87,7 @@ class TestChromaDBProvider:
             mock_client.get_or_create_collection.return_value = mock_col
 
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             await provider.create_collection("test_col")
 
@@ -115,6 +122,7 @@ class TestChromaDBProvider:
             }
 
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             await provider.create_collection("test_col")
 
@@ -143,6 +151,7 @@ class TestChromaDBProvider:
             mock_client.get_or_create_collection.return_value = mock_col
 
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             await provider.create_collection("test_col")
 
@@ -159,6 +168,7 @@ class TestChromaDBProvider:
             mock_client.get_or_create_collection.return_value = mock_col
 
             from app.providers.vectordb.chroma_db import ChromaDBProvider
+
             provider = ChromaDBProvider(path="./test_chroma")
             await provider.create_collection("test_col")
             assert "test_col" in provider._collections

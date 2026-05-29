@@ -1,7 +1,7 @@
 from typing import Any
 
-from app.providers.llm.base import LLMProvider
 from app.providers.embedding.base import EmbeddingProvider
+from app.providers.llm.base import LLMProvider
 from app.providers.vectordb.base import VectorDBProvider
 
 

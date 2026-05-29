@@ -1,9 +1,9 @@
 import asyncio
 import os
+import shutil
+import tempfile
 import uuid
 import zipfile
-import tempfile
-import shutil
 from pathlib import Path, PurePosixPath
 
 from fastapi import APIRouter, HTTPException, UploadFile
@@ -11,11 +11,11 @@ from fastapi import APIRouter, HTTPException, UploadFile
 from app.core.config import settings
 from app.core.events import EventEmitter
 from app.db.database import Database
-from app.processing.chunker import Chunker, Chunk
+from app.models.schemas import ChunkingConfig
+from app.processing.chunker import Chunk, Chunker
+from app.processing.codebase_parser import CodeChunk, parse_codebase
 from app.processing.embedder import Embedder
 from app.processing.parser import DocumentParser, parse_document
-from app.processing.codebase_parser import parse_codebase, CodeChunk
-from app.models.schemas import ChunkingConfig
 from app.providers.manager import ProviderManager
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ async def delete_document(doc_id: str):
     pm = get_provider_manager()
     vectordb = pm.get_vectordb()
 
-    if hasattr(vectordb, '_get_collection'):
+    if hasattr(vectordb, "_get_collection"):
         try:
             col = await vectordb._get_collection(collection)
             all_data = await asyncio.to_thread(col.get, where={"document_id": doc_id})
@@ -147,7 +147,9 @@ async def upload_codebase(
             collection = project["collection"]
 
     # Run import in background
-    asyncio.create_task(_run_codebase_import(job_id, doc_id, safe_name, content, collection, project_id))
+    asyncio.create_task(
+        _run_codebase_import(job_id, doc_id, safe_name, content, collection, project_id)
+    )
 
     return {"job_id": job_id, "doc_id": doc_id, "status": "started"}
 
@@ -161,7 +163,12 @@ async def get_import_status(job_id: str):
 
 
 async def _run_codebase_import(
-    job_id: str, doc_id: str, safe_name: str, content: bytes, collection: str, project_id: str | None = None,
+    job_id: str,
+    doc_id: str,
+    safe_name: str,
+    content: bytes,
+    collection: str,
+    project_id: str | None = None,
 ) -> None:
     tmp_dir = None
     try:
@@ -212,11 +219,10 @@ async def _run_codebase_import(
         ]
 
         pm = get_provider_manager()
-        emitter = get_emitter()
-        embedder = Embedder(pm.get_embedding(), pm.get_vectordb(), emitter)
 
         # Embed in batches with progress updates
         from app.processing.embedder import EMBED_BATCH_SIZE
+
         total = len(chunks)
         for batch_start in range(0, total, EMBED_BATCH_SIZE):
             batch_end = min(batch_start + EMBED_BATCH_SIZE, total)

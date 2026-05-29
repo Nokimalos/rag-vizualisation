@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 
+
 class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
@@ -17,7 +18,11 @@ class Settings(BaseSettings):
     model_config = {"env_file": ".env", "extra": "ignore"}
 
     def has_api_key(self, provider: str) -> bool:
-        key_map = {"openai": self.OPENAI_API_KEY, "anthropic": self.ANTHROPIC_API_KEY, "cohere": self.COHERE_API_KEY}
+        key_map = {
+            "openai": self.OPENAI_API_KEY,
+            "anthropic": self.ANTHROPIC_API_KEY,
+            "cohere": self.COHERE_API_KEY,
+        }
         return bool(key_map.get(provider, ""))
 
     def available_providers(self) -> list[str]:
@@ -26,5 +31,6 @@ class Settings(BaseSettings):
             if self.has_api_key(name):
                 providers.append(name)
         return providers
+
 
 settings = Settings()

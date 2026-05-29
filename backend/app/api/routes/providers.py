@@ -43,4 +43,8 @@ async def update_provider_config(config: ProviderConfig):
         pm.set_active_embedding(config.provider_name)
     elif config.provider_type == ProviderType.VECTORDB:
         pm.set_active_vectordb(config.provider_name)
-    return {"status": "ok", "provider_type": config.provider_type, "provider_name": config.provider_name}
+    return {
+        "status": "ok",
+        "provider_type": config.provider_type,
+        "provider_name": config.provider_name,
+    }

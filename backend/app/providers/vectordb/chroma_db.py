@@ -3,7 +3,7 @@ from typing import Any
 
 import chromadb
 
-from app.providers.vectordb.base import VectorDBProvider, SearchResult
+from app.providers.vectordb.base import SearchResult, VectorDBProvider
 
 
 class ChromaDBProvider(VectorDBProvider):
