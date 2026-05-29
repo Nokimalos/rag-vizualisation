@@ -7,7 +7,8 @@ services:
       - backend-data:/app/data
       - backend-uploads:/app/uploads
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
       - CHROMA_PERSIST_DIR=/app/data/chroma
@@ -28,12 +29,13 @@ services:
 
   ollama:
     image: ollama/ollama:latest
+    container_name: ollama
     ports:
       - "11434:11434"
     volumes:
       - ollama-data:/root/.ollama
     restart: unless-stopped
-    # After first start, run: docker exec -it rag_vizualisation-ollama-1 ollama pull nomic-embed-text
+    # After first start, run: docker exec -it ollama ollama pull nomic-embed-text
 
 volumes:
   backend-data:

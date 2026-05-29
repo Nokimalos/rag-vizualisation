@@ -1,5 +1,8 @@
 # RAG Pipeline Visualization
 
+[![CI](https://github.com/Nokimalos/rag-vizualisation/actions/workflows/ci.yml/badge.svg)](https://github.com/Nokimalos/rag-vizualisation/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 An interactive web application that visualizes the entire **RAG (Retrieval-Augmented Generation)** pipeline — from document ingestion through chunking, embedding, retrieval, and generation — in real time.
 
 It serves a dual purpose:
@@ -50,7 +53,7 @@ cp backend/.env.example backend/.env
 docker compose up --build
 
 # 3. Pull an embedding model into Ollama (first run only)
-docker exec -it rag-vizualisation-ollama-1 ollama pull nomic-embed-text
+docker exec -it ollama ollama pull nomic-embed-text
 ```
 
 - Frontend: <http://localhost:3000>
