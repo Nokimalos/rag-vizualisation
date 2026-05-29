@@ -1,23 +1,15 @@
+# Environment (.env.example IS tracked — see repo)
 .env
-.pytest_cache/
+.env.local
+.env.*.local
+
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.pyw
-*.pyz
-*.pywz
-*.pyzw
-*.pyzwz
-*.pyzwzw
+*.py[cod]
+.pytest_cache/
 venv/
 .venv/
-.env.example
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.development
-.env.test
-.env.production
+
+# Runtime data & uploads
+data/
 uploads/
