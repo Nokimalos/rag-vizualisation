@@ -1,38 +1,38 @@
-fastapi==0.115.*
-uvicorn[standard]==0.34.*
+fastapi==0.136.*
+uvicorn[standard]==0.48.*
 pydantic==2.*
 pydantic-settings==2.*
-aiosqlite==0.20.*
+aiosqlite==0.22.*
 python-multipart==0.0.*
-websockets==13.*
+websockets==16.*
 
 # Document processing
-PyMuPDF==1.25.*
-python-docx==1.1.*
-tiktoken==0.8.*
+PyMuPDF==1.27.*
+python-docx==1.2.*
+tiktoken==0.13.*
 pytesseract==0.3.*
-Pillow==11.*
+Pillow==12.*
 
 # ML / Vector
 numpy==2.*
 umap-learn==0.5.*
-scikit-learn==1.6.*
+scikit-learn==1.8.*
 
 # LLM Providers
-openai==1.*
-anthropic==0.42.*
-ollama==0.4.*
+openai==2.*
+anthropic==0.105.*
+ollama==0.6.*
 
 # Embedding Providers
-cohere==5.*
+cohere==7.*
 
 # Vector DB
-chromadb==0.6.*
-qdrant-client==1.13.*
+chromadb==1.5.*
+qdrant-client==1.18.*
 psycopg2-binary==2.9.*  # required only for the optional pgvector backend
 
 # Testing & linting
-pytest==8.*
-pytest-asyncio==0.24.*
+pytest==9.*
+pytest-asyncio==1.4.*
 httpx==0.28.*
 ruff==0.15.*
