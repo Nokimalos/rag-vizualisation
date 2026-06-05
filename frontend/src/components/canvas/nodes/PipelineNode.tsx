@@ -14,7 +14,6 @@ export interface PipelineNodeData {
   label: string
   icon: string
   color: string
-  glowClass: string
   [key: string]: unknown
 }
 

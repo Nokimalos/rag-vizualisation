@@ -200,7 +200,7 @@ export function PipelineCanvas() {
               title={node.term}
               className={cn(
                 'absolute flex items-center gap-2.5 px-3 rounded-xl border bg-surface text-left transition-all',
-                'hover:border-primary/40',
+                'hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                 status === 'processing' ? 'border-primary ring-2 ring-primary/20' : 'border-border',
                 status === 'idle' && 'opacity-60',
                 isSelected && 'ring-2 ring-primary/40',

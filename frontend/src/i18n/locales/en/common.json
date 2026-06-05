@@ -1,12 +1,13 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "3D Space", "history": "History", "settings": "Settings" },
-  "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview" },
+  "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview", "close": "Close", "retry": "Try again", "errorTitle": "Something went wrong", "language": "Language", "toggleTheme": "Toggle theme" },
   "query": {
     "projectTitle": "Project",
     "noProjects": "No projects yet",
     "projectNamePlaceholder": "Project name…",
     "newProject": "New project",
     "deleteProject": "Delete project",
+    "deleteDocument": "Delete document",
     "ok": "OK",
     "title": "Query",
     "placeholder": "Ask a question… (Enter to send)",
@@ -69,6 +70,7 @@
     "pointId": "ID"
   },
   "panels": {
+    "inspectorTitle": "Node Detail",
     "chunkingTitle": "Chunking Configuration",
     "chunkingStrategy": "Strategy",
     "chunkingMethod": "Method",

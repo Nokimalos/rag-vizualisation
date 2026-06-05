@@ -318,8 +318,9 @@ export function LeftPanel({ onQuery }: LeftPanelProps) {
                     <p className="text-[9px] text-muted-foreground">{formatBytes(doc.size_bytes)} · {doc.num_chunks}ch</p>
                   </div>
                   <button
+                    aria-label={t('query.deleteDocument')}
                     onClick={async () => { await api.deleteDocument(doc.id); await refreshDocuments() }}
-                    className="opacity-0 group-hover:opacity-100 p-0.5 rounded text-muted-foreground hover:text-destructive transition-all shrink-0"
+                    className="opacity-0 group-hover:opacity-100 p-0.5 rounded text-muted-foreground hover:text-destructive transition-all shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     <Trash2 className="w-2.5 h-2.5" />
                   </button>
@@ -353,7 +354,7 @@ export function LeftPanel({ onQuery }: LeftPanelProps) {
                       onQuery(run.query, mode, activeProject.collection)
                     }
                   }}
-                  className="w-full text-left p-1.5 rounded-md hover:bg-accent transition-colors group"
+                  className="w-full text-left p-1.5 rounded-md hover:bg-accent transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <p className="text-[10px] text-foreground font-sans truncate">{run.query}</p>
                   <div className="flex items-center gap-2 mt-0.5">

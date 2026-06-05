@@ -53,6 +53,7 @@ export function TopBar() {
                 key={m}
                 onClick={() => setMode(m)}
                 className={cn('rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
                   mode === m ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground')}
               >
                 {m === 'step_by_step' ? t('common.stepByStep') : t('common.dashboard')}

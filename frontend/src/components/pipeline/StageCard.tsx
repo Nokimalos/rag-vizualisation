@@ -29,6 +29,7 @@ export function StageCard({ icon: Icon, label, term, status, metric, onClick }: 
       onClick={onClick}
       className={cn(
         'flex-1 rounded-xl border bg-surface p-3 text-left transition-all',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         status === 'processing' ? 'border-primary ring-2 ring-primary/20' : 'border-border',
         status === 'idle' && 'opacity-60',
         onClick && 'hover:border-primary/40',

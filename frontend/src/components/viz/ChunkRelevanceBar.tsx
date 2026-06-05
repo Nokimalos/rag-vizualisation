@@ -57,7 +57,7 @@ export function ChunkRelevanceBar() {
             <div key={chunk.id ?? i}>
               <button
                 onClick={() => setExpandedIndex(isExpanded ? null : i)}
-                className="w-full flex items-center gap-2 py-1.5 px-1 rounded-md hover:bg-accent transition-colors text-left"
+                className="w-full flex items-center gap-2 py-1.5 px-1 rounded-md hover:bg-accent transition-colors text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <div className="relative flex-shrink-0 w-20 h-2.5 rounded-full overflow-hidden bg-muted">
                   <div

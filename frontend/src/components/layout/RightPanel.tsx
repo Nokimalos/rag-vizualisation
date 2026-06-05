@@ -1,11 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useUIStore } from '../../stores/uiStore'
 import { PanelRouter } from '../panels/PanelRouter'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 export function RightPanel() {
+  const { t } = useTranslation()
   const rightPanelOpen = useUIStore((s) => s.rightPanelOpen)
   const selectedNode = useUIStore((s) => s.selectedNode)
   const setRightPanelOpen = useUIStore((s) => s.setRightPanelOpen)
@@ -26,14 +28,14 @@ export function RightPanel() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
             <span className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider">
-              Node Detail
+              {t('panels.inspectorTitle')}
             </span>
             <Button
               variant="ghost"
               size="icon"
               className="h-7 w-7"
               onClick={() => setRightPanelOpen(false)}
-              aria-label="Close"
+              aria-label={t('common.close')}
             >
               <X className="h-4 w-4" />
             </Button>

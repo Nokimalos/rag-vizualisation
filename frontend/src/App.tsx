@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { TopBar } from './components/layout/TopBar'
 import { ErrorBoundary } from './components/ui/ErrorBoundary'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -11,16 +12,17 @@ const EmbeddingsPage = lazy(() => import('./pages/EmbeddingsPage').then((m) => (
 const ConfigPage = lazy(() => import('./pages/ConfigPage').then((m) => ({ default: m.ConfigPage })))
 
 function PageFallback() {
+  const { t } = useTranslation()
   return (
-    <div className="flex-1 flex items-center justify-center text-text-secondary">
-      Loading…
+    <div className="flex-1 flex items-center justify-center text-muted-foreground">
+      {t('common.loading')}
     </div>
   )
 }
 
 export default function App() {
   return (
-    <div className="h-screen flex flex-col bg-bg-primary overflow-hidden">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <TopBar />
       <main className="flex-1 overflow-hidden flex flex-col">
         <TooltipProvider delayDuration={150}>
