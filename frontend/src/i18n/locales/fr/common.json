@@ -1,0 +1,4 @@
+{
+  "nav": { "pipeline": "Pipeline", "space": "Espace 3D", "history": "Historique", "settings": "Réglages" },
+  "common": { "connected": "Connecté", "disconnected": "Hors ligne", "run": "Lancer la recherche", "loading": "Chargement…", "stepByStep": "Pas à pas", "dashboard": "Vue d'ensemble" }
+}
