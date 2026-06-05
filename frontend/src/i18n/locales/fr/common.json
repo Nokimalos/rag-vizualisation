@@ -13,6 +13,13 @@
     "generation": "Génération",
     "response": "Réponse"
   },
+  "pipeline": {
+    "flowTitle": "Déroulé de la recherche",
+    "answer": "Réponse",
+    "sources": "Sources",
+    "noSources": "Aucune source pour l'instant",
+    "idleHint": "Posez une question pour lancer le déroulé de la recherche."
+  },
   "common": { "connected": "Connecté", "disconnected": "Hors ligne", "run": "Lancer la recherche", "loading": "Chargement…", "stepByStep": "Pas à pas", "dashboard": "Vue d'ensemble", "close": "Fermer", "retry": "Réessayer", "errorTitle": "Une erreur est survenue", "language": "Langue", "toggleTheme": "Changer de thème" },
   "query": {
     "projectTitle": "Projet",
