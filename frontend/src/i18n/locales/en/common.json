@@ -1,5 +1,18 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "3D Space", "history": "History", "settings": "Settings" },
+  "pipelineNodes": {
+    "document": "Document",
+    "chunking": "Chunking",
+    "embedding": "Vectors",
+    "vectorStore": "Vector store",
+    "queryInput": "Query",
+    "queryEmbed": "Query vector",
+    "retrieval": "Retrieval",
+    "ranking": "Ranking",
+    "promptAssembly": "Prompt assembly",
+    "generation": "Generation",
+    "response": "Response"
+  },
   "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview", "close": "Close", "retry": "Try again", "errorTitle": "Something went wrong", "language": "Language", "toggleTheme": "Toggle theme" },
   "query": {
     "projectTitle": "Project",

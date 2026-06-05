@@ -2,6 +2,7 @@ import {
   FileText, Scissors, Binary, Database, MessageCircle,
   Search, ArrowUpDown, Layers, Sparkles, Send,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { useUIStore } from '../../stores/uiStore'
 import { cn } from '@/lib/utils'
@@ -136,6 +137,7 @@ function EdgePath({ from, to, status }: { from: { x: number; y: number }; to: { 
 // --- Main Canvas ---
 
 export function PipelineCanvas() {
+  const { t } = useTranslation()
   const nodesState = usePipelineStore((s) => s.nodes)
   const setSelectedNode = useUIStore((s) => s.setSelectedNode)
   const selectedNode = useUIStore((s) => s.selectedNode)
@@ -220,7 +222,7 @@ export function PipelineCanvas() {
               {/* Label + latency */}
               <div className="flex flex-col min-w-0 text-left">
                 <span className="text-xs font-medium text-foreground leading-tight truncate">
-                  {node.label}
+                  {t(`pipelineNodes.${node.id}`)}
                 </span>
                 {latencyMs != null && (
                   <span className="text-[10px] font-mono text-muted-foreground">{Math.round(latencyMs)} ms</span>
