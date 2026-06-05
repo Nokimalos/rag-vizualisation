@@ -6,10 +6,10 @@ import type { NodeStatus } from '../../../types'
 type EdgeStatus = NodeStatus
 
 const STATUS_COLORS: Record<EdgeStatus, string> = {
-  idle: '#374151',
-  processing: '#00d4ff',
-  done: '#10b981',
-  error: '#ef4444',
+  idle: 'hsl(var(--border))',
+  processing: 'hsl(var(--primary))',
+  done: 'hsl(var(--success))',
+  error: 'hsl(var(--destructive))',
 }
 
 interface ParticleEdgeData extends Record<string, unknown> {
