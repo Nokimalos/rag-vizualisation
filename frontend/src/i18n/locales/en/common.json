@@ -13,6 +13,13 @@
     "generation": "Generation",
     "response": "Response"
   },
+  "pipeline": {
+    "flowTitle": "Search flow",
+    "answer": "Answer",
+    "sources": "Sources",
+    "noSources": "No sources yet",
+    "idleHint": "Ask a question to start the search flow."
+  },
   "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview", "close": "Close", "retry": "Try again", "errorTitle": "Something went wrong", "language": "Language", "toggleTheme": "Toggle theme" },
   "query": {
     "projectTitle": "Project",
