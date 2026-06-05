@@ -40,5 +40,31 @@
     "embedding": "Chaque passage est transformé en vecteur de nombres représentant son sens.",
     "retrieval": "On recherche les passages dont le sens est le plus proche de la question.",
     "generation": "Le modèle rédige une réponse à partir des passages retrouvés."
+  },
+  "settings": {
+    "title": "Réglages",
+    "subtitle": "Gérer les fournisseurs et les réglages de prompt",
+    "llmTitle": "LLM",
+    "llmHelp": "Modèle de langage utilisé pour générer les réponses.",
+    "embeddingTitle": "Embeddings",
+    "embeddingHelp": "Modèle qui transforme le texte en vecteurs.",
+    "vectordbTitle": "Base vectorielle",
+    "vectordbHelp": "Backend de stockage des embeddings.",
+    "providerLabel": "Fournisseur actif",
+    "providerPlaceholder": "Sélectionner un fournisseur",
+    "active": "Actif",
+    "available": "Disponible",
+    "noProviders": "Aucun fournisseur disponible",
+    "loading": "Chargement…",
+    "promptTitle": "Configuration du prompt",
+    "promptHelp": "Prompt système et modèle utilisés pour la génération RAG.",
+    "systemPrompt": "Prompt système",
+    "systemPromptPlaceholder": "Instructions pour le LLM…",
+    "promptTemplate": "Modèle de prompt",
+    "promptTemplateVariables": "Variables :",
+    "promptTemplateHint": "passages retrouvés concaténés · question de l'utilisateur",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "reload": "Recharger"
   }
 }
