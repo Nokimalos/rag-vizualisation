@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { LineChart, Line, Tooltip, ResponsiveContainer } from 'recharts'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { GlassCard } from '../ui/GlassCard'
@@ -10,12 +11,13 @@ function renderMarkdown(text: string) {
   const parts = text.split(/\*\*(.*?)\*\*/g)
   return parts.map((part, i) =>
     i % 2 === 1
-      ? <strong key={i} className="text-white font-semibold">{part}</strong>
+      ? <strong key={i} className="text-foreground font-semibold">{part}</strong>
       : <span key={i}>{part}</span>
   )
 }
 
 export function TokenStream() {
+  const { t } = useTranslation()
   const tokens = usePipelineStore((s) => s.tokens)
   const answer = usePipelineStore((s) => s.answer)
   const events = usePipelineStore((s) => s.events)
@@ -57,12 +59,12 @@ export function TokenStream() {
   return (
     <GlassCard>
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider">
-          Token Stream
+        <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider">
+          {t('viz.tokenStreamTitle')}
         </h4>
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-neon-gold font-mono">{currentRate}</span>
-          <span className="text-xs text-gray-400 font-mono">Tokens/sec</span>
+          <span className="text-lg font-bold text-warning font-mono">{currentRate}</span>
+          <span className="text-xs text-muted-foreground font-mono">{t('viz.tokensPerSec')}</span>
         </div>
       </div>
 
@@ -74,14 +76,14 @@ export function TokenStream() {
               <Line
                 type="monotone"
                 dataKey="rate"
-                stroke="#f59e0b"
+                stroke="#4f46e5"
                 strokeWidth={1.5}
                 dot={false}
                 isAnimationActive={false}
               />
               <Tooltip
-                contentStyle={{ background: '#12121a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 6, fontSize: 10 }}
-                formatter={(v: number) => [`${Math.round(v)} tok/s`, 'Rate']}
+                contentStyle={{ background: 'hsl(var(--surface))', border: '1px solid hsl(var(--border))', borderRadius: 6, fontSize: 10, color: 'hsl(var(--foreground))' }}
+                formatter={(v: number) => [`${Math.round(v)} tok/s`, t('viz.tokenRate')]}
                 labelFormatter={() => ''}
               />
             </LineChart>
@@ -96,12 +98,12 @@ export function TokenStream() {
         style={{ maxHeight: 300 }}
       >
         {tokens.length === 0 ? (
-          <span className="text-gray-500 text-xs">Waiting for tokens…</span>
+          <span className="text-muted-foreground text-xs">{t('viz.tokenWaiting')}</span>
         ) : (
           <>
-            <span className="text-gray-200">{renderMarkdown(answer)}</span>
+            <span className="text-foreground">{renderMarkdown(answer)}</span>
             {isRunning && (
-              <span className="inline-block w-0.5 h-4 bg-neon-gold ml-0.5 animate-pulse align-text-bottom" />
+              <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse align-text-bottom" />
             )}
           </>
         )}

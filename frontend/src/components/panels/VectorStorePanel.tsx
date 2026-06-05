@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { GlassCard } from '../ui/GlassCard'
 import { MetricBadge } from '../ui/MetricBadge'
 import { api } from '../../services/api'
@@ -6,6 +7,7 @@ import { useUIStore } from '../../stores/uiStore'
 import type { ProviderInfo } from '../../types'
 
 export function VectorStorePanel() {
+  const { t } = useTranslation()
   const activeCollection = useUIStore((s) => s.activeCollection)
   const [providers, setProviders] = useState<ProviderInfo | null>(null)
   const [embeddings, setEmbeddings] = useState<{ total: number } | null>(null)
@@ -23,25 +25,25 @@ export function VectorStorePanel() {
   return (
     <div className="space-y-3">
       <GlassCard>
-        <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          Vector Store
+        <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t('panels.vectorStoreTitle')}
         </h4>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Backend</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.vectorStoreBackend')}</span>
             <MetricBadge label="" value={activeVdb} color="emerald" />
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Embedding model</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.vectorStoreEmbeddingModel')}</span>
             <MetricBadge label="" value={activeEmbed} color="purple" />
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Collection</span>
-            <span className="text-xs text-gray-200 font-mono">default</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.vectorStoreCollection')}</span>
+            <span className="text-xs text-foreground font-mono">{t('panels.vectorStoreCollectionValue')}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Total vectors</span>
-            <span className="text-xs text-gray-200 font-mono">
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.vectorStoreTotalVectors')}</span>
+            <span className="text-xs text-foreground font-mono">
               {embeddings?.total ?? '—'}
             </span>
           </div>
@@ -49,8 +51,8 @@ export function VectorStorePanel() {
       </GlassCard>
 
       <GlassCard>
-        <p className="text-[11px] text-gray-500 leading-relaxed">
-          Chunk embeddings are stored here for similarity search. When a query arrives, its embedding is compared against all stored vectors using cosine similarity to find the most relevant chunks.
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          {t('panels.vectorStoreDescription')}
         </p>
       </GlassCard>
     </div>

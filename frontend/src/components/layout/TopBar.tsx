@@ -1,9 +1,21 @@
-import { Link, useLocation } from 'react-router-dom'
-import { Cpu, Settings, History, Box, Wifi, WifiOff } from 'lucide-react'
-import { useUIStore } from '../../stores/uiStore'
-import type { PipelineMode } from '../../types'
+import { NavLink, Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
+import { useUIStore } from '@/stores/uiStore'
+import type { PipelineMode } from '@/types'
+import { ThemeToggle } from '@/components/common/ThemeToggle'
+import { LanguageToggle } from '@/components/common/LanguageToggle'
+import { ConnectionStatus } from '@/components/common/ConnectionStatus'
+
+const NAV = [
+  { to: '/', key: 'pipeline' },
+  { to: '/embeddings', key: 'space' },
+  { to: '/history', key: 'history' },
+  { to: '/config', key: 'settings' },
+] as const
 
 export function TopBar() {
+  const { t } = useTranslation()
   const location = useLocation()
   const mode = useUIStore((s) => s.mode)
   const setMode = useUIStore((s) => s.setMode)
@@ -11,74 +23,46 @@ export function TopBar() {
   const isHome = location.pathname === '/'
 
   return (
-    <header className="h-14 flex items-center justify-between px-4 glass border-b border-glass-border z-50 relative">
-      {/* Left: Logo */}
-      <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <Cpu className="w-5 h-5 text-neon-blue" />
-        <span className="font-mono font-semibold text-sm">
-          RAG <span className="text-neon-blue">Viz</span>
-        </span>
+    <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-4">
+      <Link to="/" className="flex items-center gap-2">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-sm font-extrabold text-primary-foreground">R</span>
+        <span className="text-sm font-bold">RAG Studio</span>
       </Link>
 
-      {/* Center: Mode Toggle (only on home route) */}
-      {isHome && (
-        <div className="flex items-center gap-1 bg-bg-secondary rounded-lg p-1 border border-glass-border">
-          {(['step_by_step', 'dashboard'] as PipelineMode[]).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`px-3 py-1 rounded-md text-xs font-mono transition-all ${
-                mode === m
-                  ? 'bg-neon-blue/20 text-neon-blue border border-neon-blue/30'
-                  : 'text-gray-400 hover:text-gray-200'
-              }`}
-            >
-              {m === 'step_by_step' ? 'Step by Step' : 'Dashboard'}
-            </button>
-          ))}
-        </div>
-      )}
+      <nav className="flex items-center gap-1">
+        {NAV.map((n) => (
+          <NavLink
+            key={n.to}
+            to={n.to}
+            end={n.to === '/'}
+            className={({ isActive }) =>
+              cn('rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+                isActive ? 'bg-muted text-primary' : 'text-muted-foreground hover:text-foreground')}
+          >
+            {t(`nav.${n.key}`)}
+          </NavLink>
+        ))}
+      </nav>
 
-      {/* Right: WS indicator + nav links */}
-      <div className="flex items-center gap-3">
-        {/* WS Connection Status */}
-        <div className="flex items-center gap-1.5">
-          {wsConnected ? (
-            <Wifi className="w-4 h-4 text-neon-emerald" />
-          ) : (
-            <WifiOff className="w-4 h-4 text-red-500" />
-          )}
-          <span className={`text-xs font-mono ${wsConnected ? 'text-neon-emerald' : 'text-red-500'}`}>
-            {wsConnected ? 'Live' : 'Off'}
-          </span>
-        </div>
-
-        {/* History */}
-        <Link
-          to="/history"
-          className="flex items-center gap-1.5 text-gray-400 hover:text-gray-200 transition-colors p-1.5 rounded-md hover:bg-glass-bg"
-        >
-          <History className="w-4 h-4" />
-          <span className="text-xs font-mono hidden sm:inline">History</span>
-        </Link>
-
-        {/* Embeddings */}
-        <Link
-          to="/embeddings"
-          className="flex items-center gap-1.5 text-gray-400 hover:text-gray-200 transition-colors p-1.5 rounded-md hover:bg-glass-bg"
-        >
-          <Box className="w-4 h-4" />
-          <span className="text-xs font-mono hidden sm:inline">Embeddings</span>
-        </Link>
-
-        {/* Config */}
-        <Link
-          to="/config"
-          className="flex items-center gap-1.5 text-gray-400 hover:text-gray-200 transition-colors p-1.5 rounded-md hover:bg-glass-bg"
-        >
-          <Settings className="w-4 h-4" />
-          <span className="text-xs font-mono hidden sm:inline">Config</span>
-        </Link>
+      <div className="flex items-center gap-2">
+        <ConnectionStatus connected={wsConnected} />
+        {isHome && (
+          <div className="ml-2 flex items-center gap-1 rounded-lg border border-border p-1">
+            {(['step_by_step', 'dashboard'] as PipelineMode[]).map((m) => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                className={cn('rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                  mode === m ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground')}
+              >
+                {m === 'step_by_step' ? t('common.stepByStep') : t('common.dashboard')}
+              </button>
+            ))}
+          </div>
+        )}
+        <ThemeToggle />
+        <LanguageToggle />
       </div>
     </header>
   )

@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'node:path'
 
 export default defineConfig({
   plugins: [react()],
+  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
   build: {
     // three.js is intrinsically large and lazy-loaded only on the embeddings route.
     chunkSizeWarningLimit: 1000,

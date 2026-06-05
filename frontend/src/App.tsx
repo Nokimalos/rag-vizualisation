@@ -1,7 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { TopBar } from './components/layout/TopBar'
 import { ErrorBoundary } from './components/ui/ErrorBoundary'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 // Route-level code splitting — heavy pages (3D embeddings, charts) load on demand
 const PipelinePage = lazy(() => import('./pages/PipelinePage').then((m) => ({ default: m.PipelinePage })))
@@ -10,28 +12,31 @@ const EmbeddingsPage = lazy(() => import('./pages/EmbeddingsPage').then((m) => (
 const ConfigPage = lazy(() => import('./pages/ConfigPage').then((m) => ({ default: m.ConfigPage })))
 
 function PageFallback() {
+  const { t } = useTranslation()
   return (
-    <div className="flex-1 flex items-center justify-center text-text-secondary">
-      Loading…
+    <div className="flex-1 flex items-center justify-center text-muted-foreground">
+      {t('common.loading')}
     </div>
   )
 }
 
 export default function App() {
   return (
-    <div className="h-screen flex flex-col bg-bg-primary overflow-hidden">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <TopBar />
       <main className="flex-1 overflow-hidden flex flex-col">
-        <ErrorBoundary>
-          <Suspense fallback={<PageFallback />}>
-            <Routes>
-              <Route path="/" element={<PipelinePage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/embeddings" element={<EmbeddingsPage />} />
-              <Route path="/config" element={<ConfigPage />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
+        <TooltipProvider delayDuration={150}>
+          <ErrorBoundary>
+            <Suspense fallback={<PageFallback />}>
+              <Routes>
+                <Route path="/" element={<PipelinePage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/embeddings" element={<EmbeddingsPage />} />
+                <Route path="/config" element={<ConfigPage />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+        </TooltipProvider>
       </main>
     </div>
   )

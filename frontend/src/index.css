@@ -3,17 +3,64 @@
 @tailwind utilities;
 
 @layer base {
-  :root { color-scheme: dark; }
-  body { background: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%); min-height: 100vh; }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
-}
+  :root {
+    --background: 220 20% 97%;
+    --surface: 0 0% 100%;
+    --foreground: 222 13% 9%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 220 14% 94%;
+    --accent-foreground: 222 13% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 13% 9%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 13% 9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 243 75% 59%;
+    --popover: 222 13% 9%;
+    --popover-foreground: 0 0% 100%;
+    --success: 142 71% 37%;
+    --warning: 32 95% 44%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --radius: 0.625rem;
+  }
 
-@layer components {
-  .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-  .glow-blue { box-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
-  .glow-purple { box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
-  .glow-emerald { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
-  .glow-gold { box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+  .dark {
+    --background: 222 14% 6%;
+    --surface: 222 15% 9%;
+    --foreground: 220 14% 93%;
+    --muted: 222 14% 13%;
+    --muted-foreground: 220 9% 65%;
+    --primary: 243 90% 72%;
+    --primary-foreground: 222 14% 6%;
+    --accent: 222 14% 16%;
+    --accent-foreground: 220 14% 93%;
+    --card: 222 15% 9%;
+    --card-foreground: 220 14% 93%;
+    --secondary: 222 14% 13%;
+    --secondary-foreground: 220 14% 93%;
+    --border: 222 13% 17%;
+    --input: 222 13% 17%;
+    --ring: 243 90% 72%;
+    --popover: 222 15% 12%;
+    --popover-foreground: 220 14% 93%;
+    --success: 142 60% 45%;
+    --warning: 32 90% 55%;
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
+  }
+
+  * { border-color: hsl(var(--border)); }
+  body { background: hsl(var(--background)); color: hsl(var(--foreground)); min-height: 100vh; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
 }

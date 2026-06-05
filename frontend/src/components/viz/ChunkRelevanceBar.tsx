@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { GlassCard } from '../ui/GlassCard'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -16,7 +17,14 @@ function overlap(a: string, b: string): number {
   return total === 0 ? 0 : (shared * 2) / total
 }
 
+function relevanceBarClass(pct: number): string {
+  if (pct >= 0.66) return 'bg-primary'
+  if (pct >= 0.33) return 'bg-primary/60'
+  return 'bg-primary/40'
+}
+
 export function ChunkRelevanceBar() {
+  const { t } = useTranslation()
   const chunks = usePipelineStore((s) => s.chunks)
   const answer = usePipelineStore((s) => s.answer)
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
@@ -37,8 +45,8 @@ export function ChunkRelevanceBar() {
 
   return (
     <GlassCard>
-      <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-        Chunk Relevance
+      <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+        {t('relevance.title')}
       </h4>
       <div className="space-y-1">
         {enriched.map((chunk, i) => {
@@ -49,42 +57,38 @@ export function ChunkRelevanceBar() {
             <div key={chunk.id ?? i}>
               <button
                 onClick={() => setExpandedIndex(isExpanded ? null : i)}
-                className="w-full flex items-center gap-2 py-1.5 px-1 rounded-md hover:bg-white/5 transition-colors text-left"
+                className="w-full flex items-center gap-2 py-1.5 px-1 rounded-md hover:bg-accent transition-colors text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="relative flex-shrink-0 w-20 h-2.5 rounded-full overflow-hidden bg-bg-secondary">
+                <div className="relative flex-shrink-0 w-20 h-2.5 rounded-full overflow-hidden bg-muted">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-full"
-                    style={{
-                      width: `${pct * 100}%`,
-                      opacity: 0.3 + pct * 0.7,
-                      background: 'linear-gradient(to right, #8b5cf6, #f59e0b)',
-                    }}
+                    className={`absolute inset-y-0 left-0 rounded-full ${relevanceBarClass(pct)}`}
+                    style={{ width: `${pct * 100}%` }}
                   />
                 </div>
-                <span className="text-[10px] font-mono text-gray-400 flex-shrink-0 w-8 text-right">
+                <span className="text-[10px] font-mono text-muted-foreground flex-shrink-0 w-8 text-right">
                   {(chunk.score * 100).toFixed(0)}%
                 </span>
-                <span className="text-[10px] text-gray-300 font-sans truncate flex-1">
+                <span className="text-[10px] text-foreground font-sans truncate flex-1">
                   {chunk.text.slice(0, 50)}
                 </span>
                 {isExpanded ? (
-                  <ChevronUp className="w-3 h-3 text-gray-500 flex-shrink-0" />
+                  <ChevronUp className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                 ) : (
-                  <ChevronDown className="w-3 h-3 text-gray-500 flex-shrink-0" />
+                  <ChevronDown className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                 )}
               </button>
 
               {isExpanded && (
-                <div className="ml-1 mr-1 mb-2 p-2.5 rounded-md bg-bg-tertiary/80 border border-white/5">
+                <div className="ml-1 mr-1 mb-2 p-2.5 rounded-md bg-muted border border-border">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[10px] font-mono text-neon-purple">
-                      Score: {(chunk.score * 100).toFixed(1)}%
+                    <span className="text-[10px] font-mono text-primary">
+                      {t('relevance.score')}: {(chunk.score * 100).toFixed(1)}%
                     </span>
-                    <span className="text-[10px] font-mono text-gray-600">
-                      Overlap: {(chunk.textOverlap * 100).toFixed(1)}%
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {t('relevance.overlap')}: {(chunk.textOverlap * 100).toFixed(1)}%
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-300 font-sans leading-relaxed whitespace-pre-wrap">
+                  <p className="text-[11px] text-foreground font-sans leading-relaxed whitespace-pre-wrap">
                     {chunk.text}
                   </p>
                 </div>

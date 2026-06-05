@@ -3,10 +3,10 @@ import clsx from 'clsx'
 interface MetricBadgeProps { label: string; value: string | number; color?: 'blue' | 'purple' | 'emerald' | 'gold' }
 
 const colorMap = {
-  blue: 'text-neon-blue bg-neon-blue/10 border-neon-blue/20',
-  purple: 'text-neon-purple bg-neon-purple/10 border-neon-purple/20',
-  emerald: 'text-neon-emerald bg-neon-emerald/10 border-neon-emerald/20',
-  gold: 'text-neon-gold bg-neon-gold/10 border-neon-gold/20',
+  blue: 'text-primary bg-primary/10 border-primary/20',
+  purple: 'text-primary bg-primary/10 border-primary/20',
+  emerald: 'text-success bg-success/10 border-success/20',
+  gold: 'text-warning bg-warning/10 border-warning/20',
 }
 
 export function MetricBadge({ label, value, color = 'blue' }: MetricBadgeProps) {
