@@ -1,25 +1,26 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from 'recharts'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { GlassCard } from '../ui/GlassCard'
 import { MetricBadge } from '../ui/MetricBadge'
 
-const STEP_LABELS: Record<string, string> = {
-  query_received: 'Query',
-  query_embedded: 'Embed Query',
-  retrieval_done: 'Retrieval',
-  reranking_done: 'Reranking',
-  prompt_assembled: 'Prompt',
-  generation_done: 'Generation',
+const STEP_LABEL_KEYS: Record<string, string> = {
+  query_received: 'viz.timelineStepQuery',
+  query_embedded: 'viz.timelineStepEmbedQuery',
+  retrieval_done: 'viz.timelineStepRetrieval',
+  reranking_done: 'viz.timelineStepReranking',
+  prompt_assembled: 'viz.timelineStepPrompt',
+  generation_done: 'viz.timelineStepGeneration',
 }
 
 const STEP_COLORS: Record<string, string> = {
-  query_received: '#00d4ff',
-  query_embedded: '#8b5cf6',
-  retrieval_done: '#10b981',
-  reranking_done: '#10b981',
-  prompt_assembled: '#8b5cf6',
-  generation_done: '#f59e0b',
+  query_received: '#4f46e5',
+  query_embedded: '#818cf8',
+  retrieval_done: '#a5b4fc',
+  reranking_done: '#a5b4fc',
+  prompt_assembled: '#818cf8',
+  generation_done: '#4f46e5',
 }
 
 interface StepDatum {
@@ -29,24 +30,25 @@ interface StepDatum {
 }
 
 export function PerformanceTimeline() {
+  const { t } = useTranslation()
   const events = usePipelineStore((s) => s.events)
 
   const { steps, totalLatency } = useMemo<{ steps: StepDatum[]; totalLatency: number }>(() => {
     const steps: StepDatum[] = []
     for (const ev of events) {
-      const label = STEP_LABELS[ev.event]
-      if (!label) continue
+      const labelKey = STEP_LABEL_KEYS[ev.event]
+      if (!labelKey) continue
       const latency = ev.data.latency_ms as number | undefined
       if (latency == null) continue
       steps.push({
-        label,
+        label: t(labelKey),
         latency,
-        color: STEP_COLORS[ev.event] ?? '#00d4ff',
+        color: STEP_COLORS[ev.event] ?? '#4f46e5',
       })
     }
     const totalLatency = steps.reduce((sum, s) => sum + s.latency, 0)
     return { steps, totalLatency }
-  }, [events])
+  }, [events, t])
 
   if (steps.length === 0) return null
 
@@ -55,10 +57,10 @@ export function PerformanceTimeline() {
   return (
     <GlassCard>
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider">
-          Performance Timeline
+        <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider">
+          {t('viz.timelineTitle')}
         </h4>
-        <MetricBadge label="total" value={`${totalLatency}ms`} color="gold" />
+        <MetricBadge label={t('viz.timelineTotal')} value={`${totalLatency}ms`} color="gold" />
       </div>
 
       <div style={{ height: chartHeight }}>
@@ -84,14 +86,15 @@ export function PerformanceTimeline() {
               tickLine={false}
             />
             <Tooltip
-              cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+              cursor={{ fill: 'hsl(var(--accent))' }}
               contentStyle={{
-                background: '#12121a',
-                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'hsl(var(--surface))',
+                border: '1px solid hsl(var(--border))',
                 borderRadius: 6,
                 fontSize: 11,
+                color: 'hsl(var(--foreground))',
               }}
-              formatter={(v: number) => [`${v}ms`, 'Latency']}
+              formatter={(v: number) => [`${v}ms`, t('viz.timelineLatency')]}
             />
             <Bar dataKey="latency" radius={[0, 3, 3, 0]} isAnimationActive={false}>
               {steps.map((step, i) => (

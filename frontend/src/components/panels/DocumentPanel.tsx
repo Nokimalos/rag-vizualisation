@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FileText } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
 import { api } from '../../services/api'
 import type { DocumentInfo } from '../../types'
 
 export function DocumentPanel() {
+  const { t } = useTranslation()
   const [docs, setDocs] = useState<DocumentInfo[]>([])
 
   useEffect(() => {
@@ -23,36 +25,36 @@ export function DocumentPanel() {
   return (
     <div className="space-y-3">
       <GlassCard>
-        <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          Document Store
+        <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t('panels.documentTitle')}
         </h4>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Documents</span>
-            <span className="text-xs text-gray-200 font-mono">{docs.length}</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.documents')}</span>
+            <span className="text-xs text-foreground font-mono">{docs.length}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Total chunks</span>
-            <span className="text-xs text-gray-200 font-mono">{totalChunks}</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.totalChunks')}</span>
+            <span className="text-xs text-foreground font-mono">{totalChunks}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 font-mono">Total size</span>
-            <span className="text-xs text-gray-200 font-mono">{formatBytes(totalSize)}</span>
+            <span className="text-xs text-muted-foreground font-mono">{t('panels.totalSize')}</span>
+            <span className="text-xs text-foreground font-mono">{formatBytes(totalSize)}</span>
           </div>
         </div>
       </GlassCard>
 
       {docs.length > 0 && (
         <GlassCard>
-          <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Files
+          <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            {t('panels.filesTitle')}
           </h4>
           <div className="space-y-1.5">
             {docs.map((doc) => (
               <div key={doc.id} className="flex items-center gap-2 py-1">
-                <FileText className="w-3 h-3 text-neon-blue shrink-0" />
-                <span className="text-[11px] text-gray-300 font-mono truncate flex-1">{doc.filename}</span>
-                <span className="text-[10px] text-gray-600 font-mono shrink-0">{doc.num_chunks}ch</span>
+                <FileText className="w-3 h-3 text-primary shrink-0" />
+                <span className="text-[11px] text-foreground font-mono truncate flex-1">{doc.filename}</span>
+                <span className="text-[10px] text-muted-foreground font-mono shrink-0">{doc.num_chunks}{t('panels.chunksAbbrev')}</span>
               </div>
             ))}
           </div>
@@ -60,8 +62,8 @@ export function DocumentPanel() {
       )}
 
       <GlassCard>
-        <p className="text-[11px] text-gray-500 leading-relaxed">
-          This node represents the document ingestion entry point. Upload documents via the left panel — they are parsed, chunked, and embedded into the vector store.
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          {t('panels.documentDescription')}
         </p>
       </GlassCard>
     </div>

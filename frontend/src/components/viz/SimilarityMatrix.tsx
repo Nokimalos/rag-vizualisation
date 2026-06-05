@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import * as d3 from 'd3'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { GlassCard } from '../ui/GlassCard'
@@ -26,6 +27,7 @@ function cosineSimilarity(a: Map<string, number>, b: Map<string, number>): numbe
 }
 
 export function SimilarityMatrix() {
+  const { t } = useTranslation()
   const chunks = usePipelineStore((s) => s.chunks)
   const [selectedCell, setSelectedCell] = useState<SimilarityCell | null>(null)
 
@@ -60,8 +62,8 @@ export function SimilarityMatrix() {
 
   return (
     <GlassCard>
-      <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-        Chunk Similarity Matrix
+      <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+        {t('viz.similarityTitle')}
       </h4>
 
       <div className="overflow-auto">
@@ -73,7 +75,7 @@ export function SimilarityMatrix() {
               x={margin.left + i * cellSize + cellSize / 2}
               y={margin.top - 6}
               textAnchor="middle"
-              className="font-mono fill-gray-400"
+              className="font-mono fill-muted-foreground"
               fontSize={10}
             >
               C{i + 1}
@@ -88,7 +90,7 @@ export function SimilarityMatrix() {
               y={margin.top + i * cellSize + cellSize / 2}
               textAnchor="end"
               dominantBaseline="middle"
-              className="font-mono fill-gray-400"
+              className="font-mono fill-muted-foreground"
               fontSize={10}
             >
               C{i + 1}
@@ -109,7 +111,7 @@ export function SimilarityMatrix() {
                 width={cellSize - 1}
                 height={cellSize - 1}
                 fill={colorScale(cell.score)}
-                stroke={isSelected ? '#f59e0b' : 'transparent'}
+                stroke={isSelected ? '#4f46e5' : 'transparent'}
                 strokeWidth={isSelected ? 2 : 0}
                 className="cursor-pointer"
                 onClick={() => setSelectedCell(isSelected ? null : cell)}
@@ -123,21 +125,21 @@ export function SimilarityMatrix() {
 
       {/* Selected cell detail */}
       {selectedCell && (
-        <div className="mt-3 pt-3 border-t border-glass-border">
-          <p className="text-[10px] font-mono text-gray-400 mb-2">
+        <div className="mt-3 pt-3 border-t border-border">
+          <p className="text-[10px] font-mono text-muted-foreground mb-2">
             {selectedCell.rowLabel} vs {selectedCell.colLabel} —{' '}
-            <span className="text-neon-gold">{(selectedCell.score * 100).toFixed(1)}% similarity</span>
+            <span className="text-warning">{(selectedCell.score * 100).toFixed(1)}% {t('viz.similaritySuffix')}</span>
           </p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-[10px] font-mono text-neon-purple mb-1">{selectedCell.rowLabel}</p>
-              <p className="text-xs text-gray-300 leading-relaxed line-clamp-4">
+              <p className="text-[10px] font-mono text-primary mb-1">{selectedCell.rowLabel}</p>
+              <p className="text-xs text-foreground leading-relaxed line-clamp-4">
                 {chunks[selectedCell.row]?.text}
               </p>
             </div>
             <div>
-              <p className="text-[10px] font-mono text-neon-blue mb-1">{selectedCell.colLabel}</p>
-              <p className="text-xs text-gray-300 leading-relaxed line-clamp-4">
+              <p className="text-[10px] font-mono text-primary mb-1">{selectedCell.colLabel}</p>
+              <p className="text-xs text-foreground leading-relaxed line-clamp-4">
                 {chunks[selectedCell.col]?.text}
               </p>
             </div>

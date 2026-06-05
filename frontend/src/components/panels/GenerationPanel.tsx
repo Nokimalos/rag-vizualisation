@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { GlassCard } from '../ui/GlassCard'
 import { MetricBadge } from '../ui/MetricBadge'
@@ -6,6 +7,7 @@ import { ChunkRelevanceBar } from '../viz/ChunkRelevanceBar'
 import { PerformanceTimeline } from '../viz/PerformanceTimeline'
 
 export function GenerationPanel() {
+  const { t } = useTranslation()
   const tokens = usePipelineStore((s) => s.tokens)
   const nodeData = usePipelineStore((s) => s.nodes.generation.data)
   const latencyMs = usePipelineStore((s) => s.nodes.generation.latencyMs)
@@ -13,8 +15,8 @@ export function GenerationPanel() {
   return (
     <div className="space-y-3">
       <GlassCard>
-        <h4 className="text-xs font-mono font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          Generation
+        <h4 className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+          {t('panels.generationTitle')}
         </h4>
         <div className="flex flex-wrap gap-2">
           <MetricBadge
