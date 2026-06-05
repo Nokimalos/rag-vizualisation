@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { TopBar } from './components/layout/TopBar'
 import { ErrorBoundary } from './components/ui/ErrorBoundary'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 // Route-level code splitting — heavy pages (3D embeddings, charts) load on demand
 const PipelinePage = lazy(() => import('./pages/PipelinePage').then((m) => ({ default: m.PipelinePage })))
@@ -22,16 +23,18 @@ export default function App() {
     <div className="h-screen flex flex-col bg-bg-primary overflow-hidden">
       <TopBar />
       <main className="flex-1 overflow-hidden flex flex-col">
-        <ErrorBoundary>
-          <Suspense fallback={<PageFallback />}>
-            <Routes>
-              <Route path="/" element={<PipelinePage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/embeddings" element={<EmbeddingsPage />} />
-              <Route path="/config" element={<ConfigPage />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
+        <TooltipProvider delayDuration={150}>
+          <ErrorBoundary>
+            <Suspense fallback={<PageFallback />}>
+              <Routes>
+                <Route path="/" element={<PipelinePage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/embeddings" element={<EmbeddingsPage />} />
+                <Route path="/config" element={<ConfigPage />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+        </TooltipProvider>
       </main>
     </div>
   )
