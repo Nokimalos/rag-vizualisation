@@ -1,6 +1,40 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "Espace 3D", "history": "Historique", "settings": "Réglages" },
   "common": { "connected": "Connecté", "disconnected": "Hors ligne", "run": "Lancer la recherche", "loading": "Chargement…", "stepByStep": "Pas à pas", "dashboard": "Vue d'ensemble" },
+  "query": {
+    "projectTitle": "Projet",
+    "noProjects": "Aucun projet pour l'instant",
+    "projectNamePlaceholder": "Nom du projet…",
+    "newProject": "Nouveau projet",
+    "deleteProject": "Supprimer le projet",
+    "ok": "OK",
+    "title": "Question",
+    "placeholder": "Posez une question… (Entrée pour envoyer)",
+    "running": "En cours…",
+    "documentsTitle": "Documents",
+    "uploading": "Envoi…",
+    "dropOrClick": "Déposez un fichier ou cliquez",
+    "acceptedTypes": ".txt .md .pdf .docx .png .jpg",
+    "importCodebase": "Importer une base de code (.zip)",
+    "recentRunsTitle": "Recherches récentes",
+    "emptyTitle": "Aucun document pour l'instant",
+    "emptyDescription": "Importez un document pour commencer à poser des questions sur vos sources.",
+    "emptyNoProjectTitle": "Aucun projet pour l'instant",
+    "emptyNoProjectDescription": "Créez un projet pour commencer à importer des documents et poser des questions."
+  },
+  "controls": {
+    "reset": "Réinitialiser",
+    "play": "Lire",
+    "pause": "Pause",
+    "nextStep": "Étape suivante",
+    "speed": "Vitesse",
+    "steps": "{{current}}/{{total}} étapes"
+  },
+  "relevance": {
+    "title": "Pertinence des passages",
+    "score": "Score",
+    "overlap": "Recouvrement"
+  },
   "glossary": {
     "chunking": "Le texte est découpé en petits passages pour retrouver précisément l'info utile.",
     "embedding": "Chaque passage est transformé en vecteur de nombres représentant son sens.",

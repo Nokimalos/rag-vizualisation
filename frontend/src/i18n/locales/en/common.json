@@ -1,6 +1,40 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "3D Space", "history": "History", "settings": "Settings" },
   "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview" },
+  "query": {
+    "projectTitle": "Project",
+    "noProjects": "No projects yet",
+    "projectNamePlaceholder": "Project name…",
+    "newProject": "New project",
+    "deleteProject": "Delete project",
+    "ok": "OK",
+    "title": "Query",
+    "placeholder": "Ask a question… (Enter to send)",
+    "running": "Running…",
+    "documentsTitle": "Documents",
+    "uploading": "Uploading…",
+    "dropOrClick": "Drop file or click",
+    "acceptedTypes": ".txt .md .pdf .docx .png .jpg",
+    "importCodebase": "Import codebase (.zip)",
+    "recentRunsTitle": "Recent Runs",
+    "emptyTitle": "No documents yet",
+    "emptyDescription": "Import a document to start asking questions about your sources.",
+    "emptyNoProjectTitle": "No project yet",
+    "emptyNoProjectDescription": "Create a project to start uploading documents and asking questions."
+  },
+  "controls": {
+    "reset": "Reset",
+    "play": "Play",
+    "pause": "Pause",
+    "nextStep": "Next step",
+    "speed": "Speed",
+    "steps": "{{current}}/{{total}} steps"
+  },
+  "relevance": {
+    "title": "Chunk Relevance",
+    "score": "Score",
+    "overlap": "Overlap"
+  },
   "glossary": {
     "chunking": "The text is split into small passages so the exact useful information can be found.",
     "embedding": "Each passage is turned into a vector of numbers representing its meaning.",
