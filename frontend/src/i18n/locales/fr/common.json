@@ -41,6 +41,22 @@
     "retrieval": "On recherche les passages dont le sens est le plus proche de la question.",
     "generation": "Le modèle rédige une réponse à partir des passages retrouvés."
   },
+  "history": {
+    "title": "Historique",
+    "subtitle": "Statistiques des exécutions",
+    "statsTotal": "Exécutions totales",
+    "statsLatency": "Latence moyenne",
+    "statsDocs": "Documents",
+    "colQuestion": "Question",
+    "colTime": "Heure",
+    "colLatency": "Latence",
+    "colStatus": "Statut",
+    "statusCompleted": "Terminé",
+    "statusFailed": "Échoué",
+    "statusPending": "En attente",
+    "emptyTitle": "Aucune exécution pour l'instant",
+    "emptyDescription": "Lancez une recherche sur la page Pipeline pour voir l'historique ici."
+  },
   "settings": {
     "title": "Réglages",
     "subtitle": "Gérer les fournisseurs et les réglages de prompt",

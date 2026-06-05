@@ -41,6 +41,22 @@
     "retrieval": "We search for the passages whose meaning is closest to the question.",
     "generation": "The model writes an answer from the retrieved passages."
   },
+  "history": {
+    "title": "History",
+    "subtitle": "Pipeline run statistics",
+    "statsTotal": "Total Runs",
+    "statsLatency": "Avg Latency",
+    "statsDocs": "Documents",
+    "colQuestion": "Question",
+    "colTime": "Time",
+    "colLatency": "Latency",
+    "colStatus": "Status",
+    "statusCompleted": "Completed",
+    "statusFailed": "Failed",
+    "statusPending": "Pending",
+    "emptyTitle": "No runs yet",
+    "emptyDescription": "Run a query on the Pipeline page to see your history here."
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Manage providers and prompt settings",
