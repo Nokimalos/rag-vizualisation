@@ -1,4 +1,10 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "3D Space", "history": "History", "settings": "Settings" },
-  "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview" }
+  "common": { "connected": "Connected", "disconnected": "Offline", "run": "Run search", "loading": "Loading…", "stepByStep": "Step by step", "dashboard": "Overview" },
+  "glossary": {
+    "chunking": "The text is split into small passages so the exact useful information can be found.",
+    "embedding": "Each passage is turned into a vector of numbers representing its meaning.",
+    "retrieval": "We search for the passages whose meaning is closest to the question.",
+    "generation": "The model writes an answer from the retrieved passages."
+  }
 }

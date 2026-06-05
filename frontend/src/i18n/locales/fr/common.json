@@ -1,4 +1,10 @@
 {
   "nav": { "pipeline": "Pipeline", "space": "Espace 3D", "history": "Historique", "settings": "Réglages" },
-  "common": { "connected": "Connecté", "disconnected": "Hors ligne", "run": "Lancer la recherche", "loading": "Chargement…", "stepByStep": "Pas à pas", "dashboard": "Vue d'ensemble" }
+  "common": { "connected": "Connecté", "disconnected": "Hors ligne", "run": "Lancer la recherche", "loading": "Chargement…", "stepByStep": "Pas à pas", "dashboard": "Vue d'ensemble" },
+  "glossary": {
+    "chunking": "Le texte est découpé en petits passages pour retrouver précisément l'info utile.",
+    "embedding": "Chaque passage est transformé en vecteur de nombres représentant son sens.",
+    "retrieval": "On recherche les passages dont le sens est le plus proche de la question.",
+    "generation": "Le modèle rédige une réponse à partir des passages retrouvés."
+  }
 }
