@@ -57,6 +57,17 @@
     "emptyTitle": "Aucune exécution pour l'instant",
     "emptyDescription": "Lancez une recherche sur la page Pipeline pour voir l'historique ici."
   },
+  "space": {
+    "title": "Espace des embeddings",
+    "subtitle": "Chaque point est un passage ; les points proches ont un sens similaire.",
+    "vectors": "{{count}} vecteurs",
+    "refresh": "Actualiser",
+    "legendTitle": "Documents",
+    "emptyTitle": "Aucun embedding pour l'instant",
+    "emptyDescription": "Importez des documents sur la page Pipeline pour voir leurs embeddings ici.",
+    "errorHint": "Assurez-vous que le backend est démarré et accessible.",
+    "pointId": "ID"
+  },
   "settings": {
     "title": "Réglages",
     "subtitle": "Gérer les fournisseurs et les réglages de prompt",

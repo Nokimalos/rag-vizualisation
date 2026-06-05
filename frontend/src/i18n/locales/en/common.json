@@ -57,6 +57,17 @@
     "emptyTitle": "No runs yet",
     "emptyDescription": "Run a query on the Pipeline page to see your history here."
   },
+  "space": {
+    "title": "Embedding Space",
+    "subtitle": "Each point is a passage; nearby points have similar meaning.",
+    "vectors": "{{count}} vectors",
+    "refresh": "Refresh",
+    "legendTitle": "Documents",
+    "emptyTitle": "No embeddings yet",
+    "emptyDescription": "Upload documents on the Pipeline page to see their embeddings here.",
+    "errorHint": "Make sure the backend is running and accessible.",
+    "pointId": "ID"
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Manage providers and prompt settings",

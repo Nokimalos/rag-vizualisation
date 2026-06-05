@@ -37,26 +37,16 @@ export function ChunkPoint({ position, color, id, text, isHighlighted = false }:
           center
           style={{ pointerEvents: 'none', width: '240px' }}
         >
-          <div
-            style={{
-              background: 'rgba(10,10,20,0.92)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '8px',
-              padding: '8px 12px',
-              width: '240px',
-              fontSize: '11px',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              color: '#e2e8f0',
-              whiteSpace: 'normal',
-              wordBreak: 'break-word',
-              backdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
-            }}
-          >
-            <div style={{ fontWeight: 700, color: '#94a3b8', marginBottom: '4px', fontSize: '10px', letterSpacing: '0.05em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {/* Tooltip floats over the dark 3D scene — keep a fixed dark surface so it
+              reads consistently in both light and dark app themes. Token-based border
+              and text colours are used where the contrast holds against the dark bg. */}
+          <div className="rounded-lg border border-border bg-[#0c0d10]/95 px-3 py-2 text-[11px] shadow-lg backdrop-blur-sm" style={{ width: '240px', wordBreak: 'break-word', whiteSpace: 'normal', fontFamily: 'Inter, system-ui, sans-serif' }}>
+            <div className="mb-1 overflow-hidden text-ellipsis whitespace-nowrap text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
               {id}
             </div>
-            <div>{truncatedText}</div>
+            <div className="text-slate-200 leading-snug">
+              {truncatedText}
+            </div>
           </div>
         </Html>
       )}
