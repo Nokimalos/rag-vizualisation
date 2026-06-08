@@ -1,9 +1,9 @@
 import {
   FileText, Scissors, Binary, Database, MessageCircle,
-  Search, ArrowUpDown, Layers, Sparkles, Send, ChevronRight,
+  Search, ArrowUpDown, Layers, Sparkles, Send,
   MessageSquareText,
 } from 'lucide-react'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePipelineStore } from '../../stores/pipelineStore'
 import { useUIStore } from '../../stores/uiStore'
@@ -40,6 +40,54 @@ const statusDot: Record<NodeStatus, string> = {
   error: 'bg-destructive',
 }
 
+// --- Progressive client-side reveal ("typewriter") ---
+// Always types `text` out smoothly regardless of how bursty the real chunks
+// arrive. Eases toward the end so it never lags far behind a long answer.
+function useTypewriter(text: string, isRunning: boolean) {
+  const [revealed, setRevealed] = useState(0)
+
+  // Reset immediately when the text shrinks (new query → answer becomes '').
+  if (revealed > text.length) {
+    setRevealed(0)
+  }
+
+  useEffect(() => {
+    if (revealed >= text.length) return
+    const id = window.setInterval(() => {
+      setRevealed((prev) => {
+        if (prev >= text.length) return prev
+        return Math.min(text.length, prev + Math.max(1, Math.ceil((text.length - prev) / 15)))
+      })
+    }, 25)
+    return () => window.clearInterval(id)
+  }, [text.length, revealed])
+
+  // While running we may still have text to reveal; treat empty text as done.
+  void isRunning
+  return { shown: text.slice(0, revealed), done: revealed >= text.length }
+}
+
+// --- Connector that sweeps with the SOURCE stage's status ---
+function Connector({ status }: { status: NodeStatus }) {
+  if (status === 'processing') {
+    return (
+      <span className="relative h-0.5 w-6 overflow-hidden rounded bg-primary/30">
+        <span
+          className="absolute inset-y-0 left-0 w-1/2 rounded bg-primary"
+          style={{ animation: 'pipeline-connector-sweep 1.1s ease-in-out infinite' }}
+        />
+      </span>
+    )
+  }
+  const cls =
+    status === 'done'
+      ? 'bg-primary/50'
+      : status === 'error'
+        ? 'bg-destructive/40'
+        : 'bg-border'
+  return <span className={cn('h-0.5 w-6 rounded', cls)} />
+}
+
 export function PipelineCanvas() {
   const { t } = useTranslation()
   const nodesState = usePipelineStore((s) => s.nodes)
@@ -50,9 +98,12 @@ export function PipelineCanvas() {
   const selectedNode = useUIStore((s) => s.selectedNode)
 
   const sortedChunks = [...chunks].sort((a, b) => b.score - a.score)
+  const { shown, done } = useTypewriter(answer, isRunning)
 
   return (
     <div className="h-full overflow-auto bg-background">
+      {/* Subtle sweep used by processing connectors (reduced-motion neutralized globally) */}
+      <style>{'@keyframes pipeline-connector-sweep{0%{transform:translateX(-110%)}100%{transform:translateX(220%)}}'}</style>
       <div className="min-h-full flex flex-col justify-center gap-6 max-w-5xl mx-auto px-6 py-8">
         {/* Flow heading + stepper */}
         <div>
@@ -78,7 +129,7 @@ export function PipelineCanvas() {
                   className={cn(
                     'relative w-[116px] rounded-xl border bg-surface p-2.5 text-left transition-all',
                     'hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                    status === 'processing' ? 'border-primary ring-2 ring-primary/20' : 'border-border',
+                    status === 'processing' ? 'border-primary ring-2 ring-primary/20 animate-pulse' : 'border-border',
                     status === 'idle' && 'opacity-60',
                     isSelected && 'ring-2 ring-primary/40',
                   )}
@@ -117,7 +168,7 @@ export function PipelineCanvas() {
                 </button>
 
                 {i < STAGES.length - 1 && (
-                  <ChevronRight className="h-4 w-4 text-muted-foreground/50" />
+                  <Connector status={status} />
                 )}
               </Fragment>
             )
@@ -133,9 +184,9 @@ export function PipelineCanvas() {
               {t('pipeline.answer')}
             </div>
             {answer.length > 0 ? (
-              <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
-                {answer}
-                {isRunning && (
+              <div className="max-h-[60vh] overflow-auto whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+                {shown}
+                {(isRunning || !done) && (
                   <span className="inline-block w-[2px] h-4 bg-primary animate-pulse align-middle" />
                 )}
               </div>
