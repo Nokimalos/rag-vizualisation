@@ -169,6 +169,18 @@ npm run build                  # type-check + production build
 
 ---
 
+## Deployment
+
+The simplest production setup is a single small VPS running the provided
+`docker-compose.prod.yml` (no Ollama — cloud API keys for LLM/embeddings) with
+Caddy for automatic HTTPS. Full step-by-step: [docs/deploy-vps.md](docs/deploy-vps.md).
+
+```bash
+cp backend/.env.example backend/.env   # add OPENAI_API_KEY + ANTHROPIC_API_KEY
+cp .env.prod.example .env              # set DOMAIN=your-domain.com
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
 ## Container images
 
 Tagging a release (`git tag v0.1.0 && git push origin v0.1.0`) builds and
