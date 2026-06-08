@@ -1,0 +1,8 @@
+# Caddy reverse proxy with automatic HTTPS (Let's Encrypt).
+# DOMAIN is injected from the root .env via docker-compose.prod.yml.
+#   - With a real domain (e.g. DOMAIN=ragviz.example.com): Caddy auto-provisions TLS.
+#   - For HTTP-only testing (e.g. DOMAIN=:80): served over plain HTTP, no cert.
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy frontend:80
+}

@@ -1,0 +1,52 @@
+# Production stack — single host, no Ollama (cloud API keys), HTTPS via Caddy.
+# Usage:
+#   1. Put your API keys in backend/.env  (see backend/.env.example)
+#   2. Create a root .env with: DOMAIN=your-domain.com   (or DOMAIN=:80 for HTTP-only)
+#   3. docker compose -f docker-compose.prod.yml up -d --build
+#
+# Traffic: Internet --(443/80)--> caddy --> frontend (nginx :80) --> backend (:8090)
+# The frontend nginx already proxies /api and /ws to the "backend" service.
+
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env          # OPENAI_API_KEY (embeddings) + ANTHROPIC_API_KEY (LLM)
+    environment:
+      - CHROMA_PERSIST_DIR=/app/data/chroma
+      - DATABASE_URL=/app/data/rag_viz.db
+      - UPLOAD_DIR=/app/uploads
+      - CORS_ORIGINS=https://${DOMAIN}
+    volumes:
+      - backend-data:/app/data       # ChromaDB + SQLite run history (persistent)
+      - backend-uploads:/app/uploads # uploaded documents (persistent)
+    restart: unless-stopped
+    # No public ports — only reachable inside the compose network via Caddy/nginx.
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+    # No public ports — Caddy fronts it.
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data       # Let's Encrypt certificates (persistent)
+      - caddy-config:/config
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+volumes:
+  backend-data:
+  backend-uploads:
+  caddy-data:
+  caddy-config:
