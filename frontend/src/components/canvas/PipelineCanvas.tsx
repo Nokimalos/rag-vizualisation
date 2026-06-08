@@ -88,6 +88,20 @@ function Connector({ status }: { status: NodeStatus }) {
   return <span className={cn('h-0.5 w-6 rounded', cls)} />
 }
 
+// --- Minimal inline markdown: render **bold** as <strong> ---
+// Splitting on the literal `**` toggles bold on odd segments, so during
+// streaming an opened `**` immediately renders bold instead of showing the
+// raw asterisks while waiting for the closing `**`.
+function renderInlineMarkdown(text: string) {
+  return text.split('**').map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold">{part}</strong>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    ),
+  )
+}
+
 export function PipelineCanvas() {
   const { t } = useTranslation()
   const nodesState = usePipelineStore((s) => s.nodes)
@@ -185,7 +199,7 @@ export function PipelineCanvas() {
             </div>
             {answer.length > 0 ? (
               <div className="max-h-[60vh] overflow-auto whitespace-pre-wrap text-sm leading-relaxed text-foreground">
-                {shown}
+                {renderInlineMarkdown(shown)}
                 {(isRunning || !done) && (
                   <span className="inline-block w-[2px] h-4 bg-primary animate-pulse align-middle" />
                 )}
